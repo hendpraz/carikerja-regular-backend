@@ -19,18 +19,42 @@ const executeWitAI = async (incomingMessage) => {
           text: `Pesan Anda: ${incomingMessage}`
         };
         res.on('data', function (chunk) {
-          const data = JSON.parse(chunk);
-          const intentName = data.intents[0].name;
+          try {
+            const data = JSON.parse(chunk);
+            console.log(data);
+            const intentName = data.intents[0].name;
 
-          switch(intentName) {
-            case 'Default_Welcome_Intent':
-              replyMessage.text = 'Halo juga';
-              break;
-            default:
-              console.log(`Invalid intent name: ${intentName}`);
+            switch(intentName) {
+              case 'Default_Welcome_Intent':
+                replyMessage.text = 'Halo. Kami bisa memberikan informasi pekerjaan dan informasi mengenai platform CariKerja. Apa yang sedang Anda cari atau ingin ketahui?';
+                break;
+              case 'SmartVillage_Registration':
+                replyMessage.text = 'Untuk mendaftarkan desa Anda ke program "SmartVillage" atau "Desa Pintar", administrator desa perlu menghubungi kami untuk diskusi kontrak';
+                break;
+              case 'SmartVillage_Job_Finding':
+                replyMessage.text = 'Administrator desa yang telah mendaftar "SmartVillage" cukup mendaftarkan nomor HP milik warga desa. Jika ada pekerjaan baru yang ditambahkan, sistem akan mengirim SMS ke nomor HP tersebut';
+                break;
+              case 'Regular_Job_Posting':
+                replyMessage.text = 'Untuk memasang pekerjaan, Anda perlu mendaftarkan akun di website kami. Kemudian, admin akan verifikasi data Anda. Setelah terverifikasi, Anda dapat memasang pekerjaan. Setiap pekerjaan yang dipasang akan memiliki biaya pemasangan.';
+                break;
+              case 'Regular_Job_Posting_Fee':
+                replyMessage.text = 'Untuk setiap pekerjaan yang dipasang, akan ditagihkan biaya sebesar Rp. 100.000,- dengan pemasangan berlaku 30 hari.';
+                break;
+              case 'Regular_Job_Finding':
+                replyMessage.text = 'Saya akan menampilkan pekerjaan. Boleh tahu kategori pekerjaannya? Misalnya nama pekerjaan, lokasi, atau jenis pekerjaan?';
+                break;
+              case 'Show_Regular_Jobs':
+                replyMessage.text = 'Menampilkan pekerjaan: 1. 2. 3. 1-3 dari x pekerjaan';
+                break;
+              default:
+                console.log(`Invalid intent name: ${intentName}`);
+            }
+
+            console.log('Done!');
+          } catch (err) {
+            console.log(err);
+            replyMessage.text = 'Saya tidak mengerti maksud Anda. Bisa diulangi?';
           }
-
-          console.log('Done!');
         });
         resolve(replyMessage);
       }).on('error', function(e) {
@@ -43,14 +67,12 @@ const executeWitAI = async (incomingMessage) => {
 export const handle = async (event, context) => {
   // Validate that the request is from your LINE Channel first
 
-
   // Get channelAccessToken from env variables
   const channelAccessToken = process.env.CHANNEL_ACCESS_TOKEN;
 
   console.log(event);
   const data = JSON.parse(event.body);
   const lineEvent = data.events[0];
-  console.log(lineEvent);
 
   const replyToken = lineEvent.replyToken;
   const incomingMessage = lineEvent.message.text;
