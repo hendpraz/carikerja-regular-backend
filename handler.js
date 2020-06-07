@@ -23,6 +23,8 @@ const executeWitAI = async (incomingMessage) => {
             const data = JSON.parse(chunk);
             console.log(data);
             const intentName = data.intents[0].name;
+            const location = data.entities['wit$location:location'];
+            const profession = data.entities['profession:profession'];
 
             switch(intentName) {
               case 'Default_Welcome_Intent':
@@ -44,7 +46,14 @@ const executeWitAI = async (incomingMessage) => {
                 replyMessage.text = 'Saya akan menampilkan pekerjaan. Boleh tahu kategori pekerjaannya? Misalnya nama pekerjaan, lokasi, atau jenis pekerjaan?';
                 break;
               case 'Show_Regular_Jobs':
-                replyMessage.text = 'Menampilkan pekerjaan: 1. 2. 3. 1-3 dari x pekerjaan';
+                replyMessage.text = 'Menampilkan pekerjaan: 1. 2. 3. 1-3 dari x pekerjaan\n';
+                if(location) {
+                  replyMessage.text += `\nLokasi terdeteksi ${location}`;
+                }
+                if(profession) {
+                  replyMessage.text += `\nProfesi terdeteksi ${profession}`;
+                }
+
                 break;
               default:
                 console.log(`Invalid intent name: ${intentName}`);
