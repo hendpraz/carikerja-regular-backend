@@ -1,4 +1,3 @@
-# NOTE: update this with your service name
 service: serverless-line-chatbot
 
 # Create an optimized package for our functions 
@@ -24,9 +23,14 @@ provider:
   #  SAMPLE_ENV_VAR: ${env:SAMPLE_ENV_VAR}
 
 functions:
-  hello:
-    handler: handler.hello
+  findjobs:
+    handler: jobfinding.findjobs
     events:
       - http:
-          path: hello
-          method: get
+          path: findjobs
+          method: post
+
+# Create our resources with separate CloudFormation templates
+resources:
+  # API Gateway Errors
+  - ${file(resources/api-gateway-errors.yml)}
