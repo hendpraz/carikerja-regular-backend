@@ -19,8 +19,6 @@ provider:
   # the following line. Also, make sure to not
   # commit your .env.
   #
-  environment:
-    stripeSecretKey: ${env:ACCESS_TOKEN}
 
 functions:
   handle:
