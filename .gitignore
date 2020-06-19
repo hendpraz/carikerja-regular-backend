@@ -50,3 +50,6 @@ env.yml
 
 # Jetbrains IDEs
 .idea
+
+# RDS CA
+rds-combined-ca-bundle.pem
