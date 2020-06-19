@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-import RegularJobs from './models/RegularJobs';
+import RegularJob from './models/RegularJob';
 
 const connectToDatabase = async () => {
   mongoose.set('useFindAndModify', false);
@@ -30,7 +30,7 @@ export const findjobs = async (event, context) => {
     const profession = data.queryResult.parameters.Profession;
 
     // Build query
-    const q = `${location} ${profession}`;
+    const q = `${profession} ${location}`;
     const page = getLastPage(data.session, q);
 
     const limit = 3;
@@ -45,7 +45,7 @@ export const findjobs = async (event, context) => {
 
     console.log('Part 1');
 
-    const foundJobs = await RegularJobs.find(searchQuery)
+    const foundJobs = await RegularJob.find(searchQuery)
       .populate('owner')
       .limit(limit)
       .skip((page - 1) * limit);

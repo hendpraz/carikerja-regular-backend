@@ -1,4 +1,5 @@
-import { Schema, model } from 'mongoose';
+// import { Schema, model } from 'mongoose';
+const mongoose = require('mongoose');
 
 /**
  * Document Interface
@@ -7,8 +8,7 @@ import { Schema, model } from 'mongoose';
  * @property {String} name Nama subscription plan
  * @property {String} description Deskripsi subscription plan
  */
-const Id = Schema.Types.ObjectId;
-const documentSchema = new Schema(
+const documentSchema = new mongoose.Schema(
   {
     subs_id: { type: Number, required: true },
     name: { type: String, required: true },
@@ -17,6 +17,6 @@ const documentSchema = new Schema(
   { timestamps: true }
 );
 
-const SubscriptionPlan = model('SubscriptionPlans', documentSchema);
+const SubscriptionPlan = mongoose.model('SubscriptionPlan', documentSchema);
 
-export default SubscriptionPlan;
+module.exports = SubscriptionPlan;

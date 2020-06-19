@@ -1,5 +1,5 @@
-import { Schema, model } from 'mongoose';
-
+// import { Schema, model } from 'mongoose';
+const mongoose = require('mongoose');
 /**
  * Document Interface
  * @typedef {Object} Document
@@ -12,21 +12,22 @@ import { Schema, model } from 'mongoose';
  * @property {String} status Status pengguna reguler
  * @property {String} subscription_plan Reference ke subscription plan
  */
-const Id = Schema.Types.ObjectId;
-const documentSchema = new Schema(
+const Id = mongoose.Schema.Types.ObjectId;
+const documentSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
-    email: { type: Id, required: true },
+    email: { type: String, required: true },
     phone_number: { type: String, required: true },
     whatsapp_number: { type: String, required: true },
     profile_picture: { type: String, required: true },
     address: { type: String, required: true },
     status: { type: String, required: true },
-    subscription_plan: { type: Id, required: true, ref: 'SubscriptionPlans' }
+    subscription_plan: { type: Id, required: true, ref: 'SubscriptionPlan' },
+    plan_expiry_date : Date
   },
   { timestamps: true }
 );
 
-const RegularUser = model('RegularUsers', documentSchema);
+const RegularUser = mongoose.model('RegularUser', documentSchema);
 
-export default RegularUser;
+module.exports = RegularUser;

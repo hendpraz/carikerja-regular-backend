@@ -1,4 +1,5 @@
-import { Schema, model } from 'mongoose';
+// import { Schema, model } from 'mongoose';
+const mongoose = require('mongoose');
 
 /**
  * Document Interface
@@ -11,16 +12,17 @@ import { Schema, model } from 'mongoose';
  * @property {String} location Lokasi pekerjaan
  * @property {String} profession Jenis profesi pekerjaan
  */
-const Id = Schema.Types.ObjectId;
-const documentSchema = new Schema(
+const Id = mongoose.Schema.Types.ObjectId;
+const documentSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },
-    owner: { type: Id, required: true, ref: 'RegularUsers'},
+    owner: { type: Id, required: true, ref: 'RegularUser'},
     description: { type: String, required: true },
     num_of_openings: { type: Number, required: true },
     status: { type: Number, required: true },
     location: { type: String, required: true },
-    profession: { type: String, required: true }
+    profession: { type: String, required: true },
+    expiry_date: Date
   },
   { timestamps: true }
 );
@@ -29,6 +31,6 @@ documentSchema.index({
   title: 'text',
   description: 'text'
 });
-const RegularJobs = model('RegularJobs', documentSchema);
+const RegularJobs = mongoose.model('RegularJob', documentSchema);
 
-export default RegularJobs;
+module.exports = RegularJobs;
