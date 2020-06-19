@@ -7,6 +7,10 @@ import { Schema, model } from 'mongoose';
  * @property {String} email Email pengguna reguler
  * @property {String} phone_number Nomor HP
  * @property {String} whatsapp_number Nomor whatsapp
+ * @property {String} profile_picture Nama file profile picture pengguna
+ * @property {String} address Alamat pengguna
+ * @property {String} status Status pengguna reguler
+ * @property {String} subscription_plan Reference ke subscription plan
  */
 const Id = Schema.Types.ObjectId;
 const documentSchema = new Schema(
@@ -17,11 +21,12 @@ const documentSchema = new Schema(
     whatsapp_number: { type: String, required: true },
     profile_picture: { type: String, required: true },
     address: { type: String, required: true },
-    subscription_plan_id: { type: Id, required: true, ref: 'SubscriptionPlan' }
+    status: { type: String, required: true },
+    subscription_plan: { type: Id, required: true, ref: 'SubscriptionPlans' }
   },
   { timestamps: true }
 );
 
-const RegularUser = model('RegularUser', documentSchema);
+const RegularUser = model('RegularUsers', documentSchema);
 
 export default RegularUser;

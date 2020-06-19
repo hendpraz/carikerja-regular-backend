@@ -4,7 +4,7 @@ import { Schema, model } from 'mongoose';
  * Document Interface
  * @typedef {Object} Document
  * @property {String} title Judul pekerjaan
- * @property {String} owner_id Id pemilik pekerjaan
+ * @property {String} owner Id pemilik pekerjaan
  * @property {String} description Deskripsi pekerjaan
  * @property {Number} num_of_openings Banyaknya lowongan yang dibuka
  * @property {Number} status Status lowongan : [1 -> open, 0 -> closed]
@@ -15,7 +15,7 @@ const Id = Schema.Types.ObjectId;
 const documentSchema = new Schema(
   {
     title: { type: String, required: true },
-    owner_id: { type: Id, required: true, ref: 'RegularUser'},
+    owner: { type: Id, required: true, ref: 'RegularUsers'},
     description: { type: String, required: true },
     num_of_openings: { type: Number, required: true },
     status: { type: Number, required: true },
@@ -25,6 +25,10 @@ const documentSchema = new Schema(
   { timestamps: true }
 );
 
+documentSchema.index({
+  title: 'text',
+  description: 'text'
+});
 const RegularJobs = model('RegularJobs', documentSchema);
 
 export default RegularJobs;
