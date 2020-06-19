@@ -1,11 +1,9 @@
 export const findjobs = async (event, context) => {
   console.log(event.body);
   const data = JSON.parse(event.body);
-  const location = data.queryResult.parameters['geo-city'] || 'None';
-  const profession = data.queryResult.parameters.Profession || 'None';
+  const location = data.queryResult.parameters['geo-city'];
+  const profession = data.queryResult.parameters.Profession;
 
-  console.log(location);
-  console.log(profession);
   return {
     statusCode: 200,
     body: JSON.stringify({
