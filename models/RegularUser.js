@@ -1,5 +1,7 @@
-// import { Schema, model } from 'mongoose';
-const mongoose = require('mongoose');
+import { Schema, model } from 'mongoose';
+/* eslint-disable */
+const SubscriptionPlan = require('./SubscriptionPlan');
+/* eslint-enable */
 /**
  * Document Interface
  * @typedef {Object} Document
@@ -12,11 +14,11 @@ const mongoose = require('mongoose');
  * @property {String} status Status pengguna reguler
  * @property {String} subscription_plan Reference ke subscription plan
  */
-const Id = mongoose.Schema.Types.ObjectId;
-const documentSchema = new mongoose.Schema(
+const Id = Schema.Types.ObjectId;
+const documentSchema = new Schema(
   {
     name: { type: String, required: true },
-    email: { type: String, required: true },
+    email: { type: Id, required: true },
     phone_number: { type: String, required: true },
     whatsapp_number: { type: String, required: true },
     profile_picture: { type: String, required: true },
@@ -28,6 +30,6 @@ const documentSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const RegularUser = mongoose.model('RegularUser', documentSchema);
+const RegularUser = model('RegularUser', documentSchema);
 
-module.exports = RegularUser;
+export default RegularUser;

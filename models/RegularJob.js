@@ -1,6 +1,7 @@
-// import { Schema, model } from 'mongoose';
-const mongoose = require('mongoose');
-
+import { Schema, model } from 'mongoose';
+/* eslint-disable */
+const RegularUser = require('./RegularUser');
+/* eslint-enable */
 /**
  * Document Interface
  * @typedef {Object} Document
@@ -12,8 +13,8 @@ const mongoose = require('mongoose');
  * @property {String} location Lokasi pekerjaan
  * @property {String} profession Jenis profesi pekerjaan
  */
-const Id = mongoose.Schema.Types.ObjectId;
-const documentSchema = new mongoose.Schema(
+const Id = Schema.Types.ObjectId;
+const documentSchema = new Schema(
   {
     title: { type: String, required: true },
     owner: { type: Id, required: true, ref: 'RegularUser'},
@@ -31,6 +32,6 @@ documentSchema.index({
   title: 'text',
   description: 'text'
 });
-const RegularJobs = mongoose.model('RegularJob', documentSchema);
+const RegularJobs = model('RegularJob', documentSchema);
 
-module.exports = RegularJobs;
+export default RegularJobs;
