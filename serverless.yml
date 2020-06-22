@@ -24,11 +24,17 @@ provider:
 
 functions:
   findjobs:
-    handler: jobfinding.findjobs
+    handler: jobfinding.findjobsbot
     events:
       - http:
           path: findjobs
           method: post
+  findjobsweb:
+    handler: jobfinding.findjobsweb
+    events:
+      - http:
+          path: job/search
+          method: get
 
 # Create our resources with separate CloudFormation templates
 resources:

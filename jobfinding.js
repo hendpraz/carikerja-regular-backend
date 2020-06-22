@@ -1,25 +1,14 @@
-const mongoose = require('mongoose');
+import handler from "./libs/handler-lib";
 import RegularJob from './models/RegularJob';
+import { connectToDatabase } from './libs/db';
 
-const connectToDatabase = async () => {
-  mongoose.set('useFindAndModify', false);
-  mongoose.set('useCreateIndex', true);
-  mongoose.set('useNewUrlParser', true);
-  mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
-  mongoose.connection.on('error', err => {
-    console.error(err);
-    console.log('%s MongoDB connection error. Please make sure MongoDB is running.');
-    process.exit();
-  });
-  console.log('Connected MongoDB!');
-};
-
+/* FOR LINE CHATBOT */
 const getLastPage = (session, q) => {
   console.log(`session: ${session}, q: ${q}`);
   return 1;
 };
 
-export const findjobs = async (event, context) => {
+export const findjobsbot = async (event, context) => {
   try {
     console.log(event.body);
     const data = JSON.parse(event.body);
@@ -43,14 +32,11 @@ export const findjobs = async (event, context) => {
       }
     };
 
-    console.log('Part 1');
-
     const foundJobs = await RegularJob.find(searchQuery)
       .populate('owner')
       .limit(limit)
       .skip((page - 1) * limit);
 
-    console.log('Part 2');
     let jobsMessage = '';
     let i = 1;
     foundJobs.forEach(element => {
@@ -77,7 +63,7 @@ export const findjobs = async (event, context) => {
   } catch (err) {
     console.error(err);
     return {
-      statusCode: 200,
+      statusCode: 500,
       body: JSON.stringify({
         "fulfillmentMessages": [
           {
@@ -92,3 +78,8 @@ export const findjobs = async (event, context) => {
     };
   }
 };
+
+/* FOR WEB APP */
+export const findjobsweb = handler(async (event, context) => {
+  return { foo: "bar" };
+});
