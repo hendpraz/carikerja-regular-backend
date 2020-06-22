@@ -1,6 +1,7 @@
 import { Schema, model } from 'mongoose';
 /* eslint-disable */
-const RegularUser = require('./RegularUser');
+const VillageUser = require('./VillageUser');
+const Village = require('./Village');
 /* eslint-enable */
 /**
  * Document Interface
@@ -17,13 +18,11 @@ const Id = Schema.Types.ObjectId;
 const documentSchema = new Schema(
   {
     title: { type: String, required: true },
-    owner: { type: Id, required: true, ref: 'RegularUser'},
+    owner: { type: Id, required: true, ref: 'VillageUser'},
     description: { type: String, required: true },
     num_of_openings: { type: Number, required: true },
-    status: { type: Number, required: true },
-    location: { type: String, required: true },
-    profession: { type: String, required: true },
-    expiry_date: Date
+    village: { type: Id, required: true, ref: 'Village' },
+    status: { type: Number, required: true }
   },
   { timestamps: true }
 );
@@ -32,6 +31,6 @@ documentSchema.index({
   title: 'text',
   description: 'text'
 });
-const RegularJob = model('RegularJob', documentSchema);
+const VillageJob = model('VillageJob', documentSchema);
 
-export default RegularJob;
+export default VillageJob;
