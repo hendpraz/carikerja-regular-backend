@@ -24,13 +24,13 @@ provider:
 
 functions:
   findjobs:
-    handler: jobfinding.findjobsbot
+    handler: handlers/jobfinding.findjobsbot
     events:
       - http:
           path: findjobs
           method: post
   findjobsweb:
-    handler: jobfinding.findjobsweb
+    handler: handlers/jobfinding.findjobsweb
     events:
       - http:
           path: job/search

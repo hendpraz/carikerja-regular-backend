@@ -1,6 +1,6 @@
-import handler from "./libs/handler-lib";
-import RegularJob from './models/RegularJob';
-import { connectToDatabase } from './libs/db';
+import handler from "../libs/handler-lib";
+import RegularJob from '../models/RegularJob';
+import { connectToDatabase } from '../libs/db';
 
 /* FOR LINE CHATBOT */
 const getLastPage = (session, q) => {
