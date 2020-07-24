@@ -31,7 +31,7 @@ export const createVillageAdmin = handler(async (event, context) => {
   // Validate User First
   validateAdmin(identityId, data.village);
 
-  await connectToDatabase();
+  // await connectToDatabase();
   const foundUser = VillageUser.findOne({
     user_id: data.user_id
   });
@@ -39,6 +39,7 @@ export const createVillageAdmin = handler(async (event, context) => {
   if (foundUser) {
     if (foundUser.village == data.village) {
       foundUser.subscription_plan = VILLAGE_ADMIN;
+      (await foundUser).save();
     } else {
       throw new Error("Invalid combination of user and village");
     }
@@ -56,20 +57,35 @@ export const getVillageAdmin = handler(async (event, context) => {
   // Validate User First
   validateAdmin(identityId, data.village);
 
-  const foundAdmin = await VillageUser.find(data.user_id);
+  // await connectToDatabase();
+  const foundUser = await VillageUser.findOne(
+    { user_id: data.user_id, subscription_plan: VILLAGE_ADMIN }
+  );
 
-  await connectToDatabase();
+  if (foundUser) {
+    if (foundUser.village != data.village) {
+      throw new Error("Invalid combination of id and village");
+    }
+  } else {
+    throw new Error("Admin not found");
+  }
 
-  return { message: "OK" };
+  return { message: "OK", admin: foundUser };
 });
 
 export const listVillageAdmin = handler(async (event, context) => {
-  // Validate User First
-  
   console.log(event.body);
   const data = JSON.parse(event.body);
+  const identityId = event.requestContext.identity.cognitoIdentityId;
+  // Validate User First
+  validateAdmin(identityId, data.village);
+
+  // await connectToDatabase();
+  const foundUser = await VillageUser.find(
+    { village: data.village, subscription_plan: VILLAGE_ADMIN }
+  );
 
   await connectToDatabase();
 
-  return { foo: "bar" };
+  return { message: "OK", admin_list: foundUser };
 });
