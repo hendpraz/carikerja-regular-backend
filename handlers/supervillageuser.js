@@ -28,14 +28,14 @@ export const createVillage = handler(async (event, context) => {
   return { foo: "bar" };
 });
 
-export const createVillage = handler(async (event, context) => {
+export const deactivateVillage = handler(async (event, context) => {
   const identityId = event.requestContext.identity.cognitoIdentityId;
   validateSuperuser(identityId);
 
   return { foo: "bar" };
 });
 
-export const createVillage = handler(async (event, context) => {
+export const updateVillagePlan = handler(async (event, context) => {
   const identityId = event.requestContext.identity.cognitoIdentityId;
   validateSuperuser(identityId);
 
