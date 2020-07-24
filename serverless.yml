@@ -52,8 +52,14 @@ functions:
           path: villages/profile/{idv}
           method: patch
   ####
+  createvillagejob:
+    handler: handlers/villagejob.createVillageJob
+    events:
+      - http:
+          path: village-jobs
+          method: post
   listvillagejob:
-    handler: handlers/villagejob.getVillageProfile
+    handler: handlers/villagejob.listVillageProfile
     events:
       - http:
           path: village-jobs/{idv}
@@ -64,6 +70,24 @@ functions:
       - http:
           path: village-jobs/{idv}/{idj}
           method: get
+  updatevillagejobdetail:
+    handler: handlers/villagejob.updateVillageJobDetail
+    events:
+      - http:
+          path: village-job-detail/{idv}/{idj}
+          method: patch
+  updatevillagejobdetail:
+    handler: handlers/villagejob.updateVillageJobStatus
+    events:
+      - http:
+          path: village-job-status/{idv}/{idj}
+          method: patch
+  completevillagejob:
+    handler: handlers/villagejob.completeVillageJob
+    events:
+      - http:
+          path: village-job-complete/{idv}/{idj}
+          method: post
   ####
   createvillageadmin:
     handler: handlers/villageuser.createVillageAdmin
@@ -72,13 +96,13 @@ functions:
           path: village-admins
           method: post
   listvillageadmin:
-    handler: handlers/villageuser.createVillageAdmin
+    handler: handlers/villageuser.listVillageAdmin
     events:
       - http:
           path: village-admins/{idv}
           method: get
   getvillageadmin:
-    handler: handlers/villageuser.createVillageAdmin
+    handler: handlers/villageuser.getVillageAdmin
     events:
       - http:
           path: village-admins/{idv}/{idu}
