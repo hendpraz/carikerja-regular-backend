@@ -14,21 +14,22 @@ const validateAdmin = (identityId, village) => {
   });
 
   if (foundUser) {
-    if ((foundUser.village == village) && (foundUser.subscription_plan == VILLAGE_ADMIN)){
-      return true;
-    } else {
-      return false;
+    if ((foundUser.subscription_plan != VILLAGE_ADMIN)) {
+      throw new Error("Auth Error: the requesting user isn't village admin");
+    } else if (foundUser.village != village){
+      throw new Error("Auth Error: unauthorized village access");
     }
   } else {
-    return false;
+    throw new Error("Auth error: the requesting user data not found");
   }
 }
 
 export const getVillageProfile = handler(async (event, context) => {
   console.log(event.body);
   const data = JSON.parse(event.body);
-  const identityId = event.requestContext.identity.cognitoIdentityId;
+
   // Validate User First
+  const identityId = event.requestContext.identity.cognitoIdentityId;
   validateAdmin(identityId, data.village);
 
   // await connectToDatabase();

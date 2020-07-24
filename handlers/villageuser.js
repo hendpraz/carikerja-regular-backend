@@ -14,22 +14,22 @@ const validateAdmin = (identityId, village) => {
   });
 
   if (foundUser) {
-    if ((foundUser.village == village) && (foundUser.subscription_plan == VILLAGE_ADMIN)){
-      return true;
-    } else {
-      return false;
+    if ((foundUser.subscription_plan != VILLAGE_ADMIN)) {
+      throw new Error("Auth Error: the requesting user isn't village admin");
+    } else if (foundUser.village != village){
+      throw new Error("Auth Error: unauthorized village access");
     }
   } else {
-    return false;
+    throw new Error("Auth error: the requesting user data not found");
   }
 }
 
 export const createVillageAdmin = handler(async (event, context) => {
   console.log(event.body);
   const data = JSON.parse(event.body);
-  const identityId = event.requestContext.identity.cognitoIdentityId;
-  
+
   // Validate User First
+  const identityId = event.requestContext.identity.cognitoIdentityId;
   validateAdmin(identityId, data.village);
 
   // await connectToDatabase();
@@ -54,8 +54,9 @@ export const createVillageAdmin = handler(async (event, context) => {
 export const getVillageAdmin = handler(async (event, context) => {  
   console.log(event.body);
   const data = JSON.parse(event.body);
-  const identityId = event.requestContext.identity.cognitoIdentityId;
+
   // Validate User First
+  const identityId = event.requestContext.identity.cognitoIdentityId;
   validateAdmin(identityId, data.village);
 
   // await connectToDatabase();
@@ -73,8 +74,9 @@ export const getVillageAdmin = handler(async (event, context) => {
 export const listVillageAdmin = handler(async (event, context) => {
   console.log(event.body);
   const data = JSON.parse(event.body);
-  const identityId = event.requestContext.identity.cognitoIdentityId;
+
   // Validate User First
+  const identityId = event.requestContext.identity.cognitoIdentityId;
   validateAdmin(identityId, data.village);
 
   // await connectToDatabase();
@@ -88,8 +90,9 @@ export const listVillageAdmin = handler(async (event, context) => {
 export const updateVillageAdmin = handler(async (event, context) => {  
   console.log(event.body);
   const data = JSON.parse(event.body);
-  const identityId = event.requestContext.identity.cognitoIdentityId;
+
   // Validate User First
+  const identityId = event.requestContext.identity.cognitoIdentityId;
   validateAdmin(identityId, data.village);
 
   // await connectToDatabase();
@@ -112,8 +115,9 @@ export const updateVillageAdmin = handler(async (event, context) => {
 export const revokeVillageAdmin = handler(async (event, context) => {  
   console.log(event.body);
   const data = JSON.parse(event.body);
-  const identityId = event.requestContext.identity.cognitoIdentityId;
+
   // Validate User First
+  const identityId = event.requestContext.identity.cognitoIdentityId;
   validateAdmin(identityId, data.village);
 
   // await connectToDatabase();
@@ -134,8 +138,9 @@ export const revokeVillageAdmin = handler(async (event, context) => {
 export const createVillageUser = handler(async (event, context) => {  
   console.log(event.body);
   const data = JSON.parse(event.body);
-  const identityId = event.requestContext.identity.cognitoIdentityId;
+
   // Validate User First
+  const identityId = event.requestContext.identity.cognitoIdentityId;
   validateAdmin(identityId, data.village);
 
   const newUser = {};
@@ -162,8 +167,9 @@ export const createVillageUser = handler(async (event, context) => {
 export const getVillageUser = handler(async (event, context) => {  
   console.log(event.body);
   const data = JSON.parse(event.body);
-  const identityId = event.requestContext.identity.cognitoIdentityId;
+
   // Validate User First
+  const identityId = event.requestContext.identity.cognitoIdentityId;
   validateAdmin(identityId, data.village);
 
   // await connectToDatabase();
@@ -181,8 +187,9 @@ export const getVillageUser = handler(async (event, context) => {
 export const listVillageUser  = handler(async (event, context) => {  
   console.log(event.body);
   const data = JSON.parse(event.body);
-  const identityId = event.requestContext.identity.cognitoIdentityId;
+
   // Validate User First
+  const identityId = event.requestContext.identity.cognitoIdentityId;
   validateAdmin(identityId, data.village);
 
   // await connectToDatabase();
@@ -196,8 +203,9 @@ export const listVillageUser  = handler(async (event, context) => {
 export const updateVillageUser = handler(async (event, context) => {  
   console.log(event.body);
   const data = JSON.parse(event.body);
-  const identityId = event.requestContext.identity.cognitoIdentityId;
+
   // Validate User First
+  const identityId = event.requestContext.identity.cognitoIdentityId;
   validateAdmin(identityId, data.village);
 
   // await connectToDatabase();
@@ -220,8 +228,9 @@ export const updateVillageUser = handler(async (event, context) => {
 export const deleteVillageUser = handler(async (event, context) => {  
   console.log(event.body);
   const data = JSON.parse(event.body);
-  const identityId = event.requestContext.identity.cognitoIdentityId;
+
   // Validate User First
+  const identityId = event.requestContext.identity.cognitoIdentityId;
   validateAdmin(identityId, data.village);
 
   // await connectToDatabase();
