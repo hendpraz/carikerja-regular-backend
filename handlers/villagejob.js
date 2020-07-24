@@ -9,7 +9,7 @@ export const createVillageJob = handler(async (event, context) => {
 
   // Validate User First
   const identityId = event.requestContext.identity.cognitoIdentityId;
-  await validateAdmin(identityId, data.village);
+  await validateAdmin(identityId, data.village, "Membuat pekerjaan baru.");
 
   const newJob = {};
 
@@ -66,7 +66,7 @@ export const updateVillageJobDetail = handler(async (event, context) => {
 
   // Validate User First
   const identityId = event.requestContext.identity.cognitoIdentityId;
-  await validateAdmin(identityId, villageId);
+  await validateAdmin(identityId, villageId, "Mengubah detil pekerjaan.");
 
   const foundJob = await VillageJob.findById(jobId);
 
@@ -96,7 +96,7 @@ export const updateVillageJobStatus = handler(async (event, context) => {
 
   // Validate User First
   const identityId = event.requestContext.identity.cognitoIdentityId;
-  await validateAdmin(identityId, villageId);
+  await validateAdmin(identityId, villageId, "Mengubah status pekerjaan");
 
   const foundJob = await VillageJob.findById(jobId);
 
@@ -121,7 +121,7 @@ export const completeVillageJob = handler(async (event, context) => {
 
   // Validate User First
   const identityId = event.requestContext.identity.cognitoIdentityId;
-  await validateAdmin(identityId, villageId);
+  await validateAdmin(identityId, villageId, "Mengonfirmasi penerimaan pekerjaan.");
 
   const foundJob = await VillageJob.findById(jobId);
 

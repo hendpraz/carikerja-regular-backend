@@ -18,7 +18,7 @@ export const createVillageAdmin = handler(async (event, context) => {
 
   // Validate User First
   const identityId = event.requestContext.identity.cognitoIdentityId;
-  await validateAdmin(identityId, data.village);
+  await validateAdmin(identityId, data.village, "Membuat admin baru.");
 
   const foundUser = VillageUser.findOne({
     user_id: data.user_id
@@ -80,7 +80,7 @@ export const updateVillageAdmin = handler(async (event, context) => {
 
   // Validate User First
   const identityId = event.requestContext.identity.cognitoIdentityId;
-  await validateAdmin(identityId, villageId);
+  await validateAdmin(identityId, villageId, "Mengupdate data admin.");
 
   const foundUser = await VillageUser.findOne(
     { user_id: userId, subscription_plan: VILLAGE_ADMIN, village: villageId }
@@ -104,7 +104,7 @@ export const revokeVillageAdmin = handler(async (event, context) => {
 
   // Validate User First
   const identityId = event.requestContext.identity.cognitoIdentityId;
-  await validateAdmin(identityId, data.village);
+  await validateAdmin(identityId, data.village, "Mencabut akses admin.");
 
   const foundUser = await VillageUser.findOne(
     { user_id: data.user_id, subscription_plan: VILLAGE_ADMIN, village: data.village }
@@ -132,7 +132,7 @@ export const createVillageUser = handler(async (event, context) => {
 
   // Validate User First
   const identityId = event.requestContext.identity.cognitoIdentityId;
-  await validateAdmin(identityId, data.village);
+  await validateAdmin(identityId, data.village, "Menambah data warga baru.");
 
   const newUser = {};
 
@@ -197,7 +197,7 @@ export const updateVillageUser = handler(async (event, context) => {
 
   // Validate User First
   const identityId = event.requestContext.identity.cognitoIdentityId;
-  await validateAdmin(identityId, villageId);
+  await validateAdmin(identityId, villageId, "Mengubah data warga.");
 
   const foundUser = await VillageUser.findOne(
     { user_id: userId, subscription_plan: VILLAGE_USER, village: villageId }
@@ -221,11 +221,13 @@ export const deleteVillageUser = handler(async (event, context) => {
 
   // Validate User First
   const identityId = event.requestContext.identity.cognitoIdentityId;
-  await validateAdmin(identityId, villageId);
+  await validateAdmin(identityId, villageId, "Menghapus warga.");
 
   await VillageUser.deleteOne(
     { user_id: userId, village: villageId }
   );
+
+  // TODO: Delete Cognito User
 
   return { message: "OK" };
 });

@@ -51,3 +51,19 @@ export const updateVillageProfile = handler(async (event, context) => {
 
   return { message: "OK" };
 });
+
+export const listVillageActivity = handler(async (event, context) => {
+  const villageId = event.pathParameters.idv;
+
+  // Validate User First
+  const identityId = event.requestContext.identity.cognitoIdentityId;
+  await validateAdmin(identityId, villageId);
+
+  const foundVillageActivities = await Village.find({ village: villageId });
+
+  if (!foundVillageActivities) {
+    throw new Error("Village Activity not found");
+  }
+
+  return { message: "OK", village_activities: foundVillageActivities };
+});

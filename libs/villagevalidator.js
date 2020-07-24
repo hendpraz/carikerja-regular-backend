@@ -1,11 +1,12 @@
 import { connectToDatabase } from './db';
+import VillageActivity from '../models/VillageActivity';
 import VillageUser from '../models/VillageUser';
 
 // Village Subscription Plan
 const VILLAGE_ADMIN = 4;
 const VILLAGE_SUPERUSER = 7;
 
-export const validateAdmin = async (identityId, village) => {
+export const validateAdmin = async (identityId, village, activity_description) => {
   await connectToDatabase();
 
   const foundUser = VillageUser.findOne({
@@ -20,6 +21,16 @@ export const validateAdmin = async (identityId, village) => {
     }
   } else {
     throw new Error("Auth error: the requesting user data not found");
+  }
+
+  if (activity_description) {
+    const newVillageActivity = {};
+
+    newVillageActivity.village_user = foundUser._id;
+    newVillageActivity.village = foundUser.village;
+    newVillageActivity.activity_description = activity_description;
+  
+    await VillageActivity.create(newVillageActivity);
   }
 };
 
