@@ -41,12 +41,3 @@ export const getVillageProfile = handler(async (event, context) => {
 
   return { message: "OK", village: foundVillage };
 });
-
-export const updateVillageProfile = handler(async (event, context) => {
-  // Must be Admin
-  
-  console.log(event.body);
-  await connectToDatabase();
-
-  return { foo: "bar" };
-});

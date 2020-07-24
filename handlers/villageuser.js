@@ -24,6 +24,12 @@ const validateAdmin = (identityId, village) => {
   }
 }
 
+/*
+  *************
+  VILLAGE ADMIN
+  *************
+  */
+
 export const createVillageAdmin = handler(async (event, context) => {
   console.log(event.body);
   const data = JSON.parse(event.body);
@@ -134,6 +140,12 @@ export const revokeVillageAdmin = handler(async (event, context) => {
 
   return { message: "OK" };
 });
+
+/*
+  ************
+  VILLAGE USER
+  ************ 
+  */
 
 export const createVillageUser = handler(async (event, context) => {  
   console.log(event.body);
