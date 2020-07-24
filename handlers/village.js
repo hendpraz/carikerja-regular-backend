@@ -4,10 +4,22 @@ import { validateAdmin } from "../libs/villagevalidator";
 import { validateSuperuser } from "../libs/villagevalidator";
 
 export const createVillage = handler(async (event, context) => {
+  console.log(event.body);
+  const data = JSON.parse(event.body);
+
   const identityId = event.requestContext.identity.cognitoIdentityId;
   await validateSuperuser(identityId);
 
-  return { foo: "bar" };
+  const newVillage = {};
+
+  newVillage.name = data.name;
+  newVillage.city = data.city;
+  newVillage.province = data.province;
+  newVillage.country = data.country;
+
+  await Village.create(newVillage);
+
+  return { message: "OK" };
 });
 
 export const getVillageProfile = handler(async (event, context) => {
