@@ -9,7 +9,7 @@ const Village = require('./Village');
  * @property {String} name Nama lengkap pengguna
  * @property {String} phone_number Nomor HP
  * @property {String} address Alamat pengguna
- * @property {String} status Status pengguna reguler
+ * @property {String} status Status pengguna
  * @property {String} subscription_plan Reference ke subscription plan
  * @property {String} village id desa dari pengguna
  * @property {String} user_id cognito identity id pengguna
