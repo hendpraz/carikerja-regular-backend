@@ -79,7 +79,7 @@ export const listVillageAdmin = handler(async (event, context) => {
 
   // await connectToDatabase();
   const foundUser = await VillageUser.find(
-    { village: data.village, subscription_plan: VILLAGE_ADMIN }
+    { subscription_plan: VILLAGE_ADMIN, village: data.village }
   );
 
   return { message: "OK", admin_list: foundUser };
@@ -128,5 +128,53 @@ export const revokeVillageAdmin = handler(async (event, context) => {
   foundUser.subscription_plan = VILLAGE_USER;
   await foundUser.save();
 
+  return { message: "OK" };
+});
+
+export const createVillageUser  = handler(async (event, context) => {  
+  console.log(event.body);
+  const data = JSON.parse(event.body);
+  const identityId = event.requestContext.identity.cognitoIdentityId;
+  // Validate User First
+  validateAdmin(identityId, data.village);
+
+  return { message: "OK" };
+});
+
+export const getVillageUser  = handler(async (event, context) => {  
+  console.log(event.body);
+  const data = JSON.parse(event.body);
+  const identityId = event.requestContext.identity.cognitoIdentityId;
+  // Validate User First
+  validateAdmin(identityId, data.village);
+
+  // await connectToDatabase();
+  const foundUser = await VillageUser.findOne(
+    { user_id: data.user_id, subscription_plan: VILLAGE_USER, village: data.village }
+  );
+
+  if (!foundUser) {
+    throw new Error("User not found");
+  }
+
+  return { message: "OK", user: foundUser };
+});
+
+export const listVillageUser  = handler(async (event, context) => {  
+  console.log(event.body);
+  const data = JSON.parse(event.body);
+  const identityId = event.requestContext.identity.cognitoIdentityId;
+  // Validate User First
+  validateAdmin(identityId, data.village);
+
+  // await connectToDatabase();
+  const foundUser = await VillageUser.find(
+    { subscription_plan: VILLAGE_USER, village: data.village }
+  );
+
+  return { message: "OK", user_list: foundUser };
+});
+
+export const updateVillageUser  = handler(async (event, context) => {  
   return { message: "OK" };
 });
