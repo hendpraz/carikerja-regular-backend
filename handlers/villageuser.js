@@ -2,7 +2,7 @@ import handler from "../libs/handler-lib";
 import VillageUser from '../models/VillageUser';
 import { connectToDatabase } from '../libs/db';
 
-// Village Administrator SubsPlan = 4
+// Village Subscription Plan Number
 const VILLAGE_USER = 3;
 const VILLAGE_ADMIN = 4;
 
@@ -213,6 +213,21 @@ export const updateVillageUser = handler(async (event, context) => {
   foundUser.phone_number = data.phone_number;
   foundUser.address = data.address;
   await foundUser.save();
+
+  return { message: "OK" };
+});
+
+export const deleteVillageUser = handler(async (event, context) => {  
+  console.log(event.body);
+  const data = JSON.parse(event.body);
+  const identityId = event.requestContext.identity.cognitoIdentityId;
+  // Validate User First
+  validateAdmin(identityId, data.village);
+
+  // await connectToDatabase();
+  await VillageUser.deleteOne(
+    { user_id: data.user_id, subscription_plan: VILLAGE_USER, village: data.village }
+  );
 
   return { message: "OK" };
 });
