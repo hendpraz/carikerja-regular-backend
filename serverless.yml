@@ -62,7 +62,7 @@ functions:
     handler: handlers/villagejob.getVillageProfile
     events:
       - http:
-          path: village-jobs/{idv}/{idJ}
+          path: village-jobs/{idv}/{idj}
           method: get
   ####
   createvillageadmin:
