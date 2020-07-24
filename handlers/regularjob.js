@@ -24,3 +24,19 @@ export const createRegularJob = handler(async (event, context) => {
 
   return { message: "OK" };
 });
+
+export const getRegularJob = handler(async (event, context) => {
+  return { message: "OK" };
+});
+
+export const updateRegularJobDetail = handler(async (event, context) => {
+  return { message: "OK" };
+});
+
+export const updateRegularJobStatus = handler(async (event, context) => {
+  return { message: "OK" };
+});
+
+export const completeRegularJob = handler(async (event, context) => {
+  return { message: "OK" };
+});
