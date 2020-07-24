@@ -1,49 +1,16 @@
 import handler from "../libs/handler-lib";
-import VillageUser from '../models/VillageUser';
-import { connectToDatabase } from '../libs/db';
+import Village from "../models/Village";
+import { validateSuperuser } from "../libs/villagevalidator";
 
-// Village Subscription Plan
-const VILLAGE_SUPERUSER = 7;
-
-const validateSuperuser = (identityId) => {
-  await connectToDatabase();
-
-  const foundUser = VillageUser.findOne({
-    user_id: identityId
-  });
-
-  if (foundUser) {
-    if ((foundUser.subscription_plan != VILLAGE_SUPERUSER)) {
-      throw new Error("Auth Error: the requesting user isn't village superuser");
-    }
-  } else {
-    throw new Error("Auth error: the requesting user data not found");
-  }
-}
-
-/* 
+/*
   *******
-  VILLAGE 
+  VILLAGE
   *******
   */
 
 export const createVillage = handler(async (event, context) => {
   const identityId = event.requestContext.identity.cognitoIdentityId;
-  validateSuperuser(identityId);
-
-  return { foo: "bar" };
-});
-
-export const deactivateVillage = handler(async (event, context) => {
-  const identityId = event.requestContext.identity.cognitoIdentityId;
-  validateSuperuser(identityId);
-
-  return { foo: "bar" };
-});
-
-export const updateVillagePlan = handler(async (event, context) => {
-  const identityId = event.requestContext.identity.cognitoIdentityId;
-  validateSuperuser(identityId);
+  await validateSuperuser(identityId);
 
   return { foo: "bar" };
 });
@@ -51,14 +18,14 @@ export const updateVillagePlan = handler(async (event, context) => {
 export const updateVillageProfile = handler(async (event, context) => {
   console.log(event.body);
   const data = JSON.parse(event.body);
+  const villageId = event.pathParameters.idv;
 
   // Validate User First
   const identityId = event.requestContext.identity.cognitoIdentityId;
-  validateSuperuser(identityId);
+  await validateSuperuser(identityId);
 
-  // await connectToDatabase();
   const foundVillage = await Village.findOne(
-    { village: data.village }
+    { village: villageId }
   );
 
   if (!foundVillage) {
@@ -76,27 +43,27 @@ export const updateVillageProfile = handler(async (event, context) => {
 
 /*
   *************************
-  VILLAGE SUBSCRIPTION PLAN 
+  VILLAGE SUBSCRIPTION PLAN
   *************************
   */
 
 export const renewVillageSubscription = handler(async (event, context) => {
   const identityId = event.requestContext.identity.cognitoIdentityId;
-  validateSuperuser(identityId);
+  await validateSuperuser(identityId);
 
   return { foo: "bar" };
 });
 
 export const updateVillageSubscription = handler(async (event, context) => {
   const identityId = event.requestContext.identity.cognitoIdentityId;
-  validateSuperuser(identityId);
+  await validateSuperuser(identityId);
 
   return { foo: "bar" };
 });
 
 export const stopVillageSubscription = handler(async (event, context) => {
   const identityId = event.requestContext.identity.cognitoIdentityId;
-  validateSuperuser(identityId);
+  await validateSuperuser(identityId);
 
   return { foo: "bar" };
 });

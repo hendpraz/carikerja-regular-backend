@@ -23,18 +23,109 @@ provider:
   #  SAMPLE_ENV_VAR: ${env:SAMPLE_ENV_VAR}
 
 functions:
+  ####
   findjobs:
     handler: handlers/jobfinding.findjobsbot
     events:
       - http:
           path: findjobs
           method: post
+  ####
   findjobsweb:
     handler: handlers/jobfinding.findjobsweb
     events:
       - http:
-          path: job/search
+          path: jobs/search
           method: get
+  ####
+  getvillageprofile:
+    handler: handlers/village.getVillageProfile
+    events:
+      - http:
+          path: villages/profile/{idv}
+          method: get
+  ####
+  updatevillageprofile:
+    handler: handlers/villagesuperuser.updateVillageProfile
+    events:
+      - http:
+          path: villages/profile/{idv}
+          method: patch
+  ####
+  listvillagejob:
+    handler: handlers/villagejob.getVillageProfile
+    events:
+      - http:
+          path: village-jobs/{idv}
+          method: get
+  getvillagejob:
+    handler: handlers/villagejob.getVillageProfile
+    events:
+      - http:
+          path: village-jobs/{idv}/{idJ}
+          method: get
+  ####
+  createvillageadmin:
+    handler: handlers/villageuser.createVillageAdmin
+    events:
+      - http:
+          path: village-admins
+          method: post
+  listvillageadmin:
+    handler: handlers/villageuser.createVillageAdmin
+    events:
+      - http:
+          path: village-admins/{idv}
+          method: get
+  getvillageadmin:
+    handler: handlers/villageuser.createVillageAdmin
+    events:
+      - http:
+          path: village-admins/{idv}/{idu}
+          method: get
+  updatevillageadmin:
+    handler: handlers/villageuser.updateVillageAdmin
+    events:
+      - http:
+          path: village-admins/update/{idv}/{idu}
+          method: patch
+  revokevillageadmin:
+    handler: handlers/villageuser.revokeVillageAdmin
+    events:
+      - http:
+          path: village-admins/revoke/{idv}/{idu}
+          method: patch
+  ####
+  createvillageuser:
+    handler: handlers/villageuser.createVillageUser
+    events:
+      - http:
+          path: village-users
+          method: post
+  listvillageuser:
+    handler: handlers/villageuser.listVillageUser
+    events:
+      - http:
+          path: village-users/{idv}
+          method: get
+  getvillageuser:
+    handler: handlers/villageuser.getVillageUser
+    events:
+      - http:
+          path: village-users/{idv}/{idu}
+          method: get
+  updatevillageuser:
+    handler: handlers/villageuser.updateVillageUser
+    events:
+      - http:
+          path: village-users/{idv}/{idu}
+          method: patch
+  deletevillageuser:
+    handler: handlers/villageuser.deleteVillageUser
+    events:
+      - http:
+          path: village-users/{idv}/{idu}
+          method: delete
 
 # Create our resources with separate CloudFormation templates
 resources:

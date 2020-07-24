@@ -1,28 +1,10 @@
 import handler from "../libs/handler-lib";
 import VillageUser from '../models/VillageUser';
-import { connectToDatabase } from '../libs/db';
+import { validateAdmin } from "../libs/villagevalidator";
 
 // Village Subscription Plan Number
 const VILLAGE_USER = 3;
 const VILLAGE_ADMIN = 4;
-
-const validateAdmin = (identityId, village) => {
-  await connectToDatabase();
-
-  const foundUser = VillageUser.findOne({
-    user_id: identityId
-  });
-
-  if (foundUser) {
-    if ((foundUser.subscription_plan != VILLAGE_ADMIN)) {
-      throw new Error("Auth Error: the requesting user isn't village admin");
-    } else if (foundUser.village != village){
-      throw new Error("Auth Error: unauthorized village access");
-    }
-  } else {
-    throw new Error("Auth error: the requesting user data not found");
-  }
-}
 
 /*
   *************
@@ -36,9 +18,8 @@ export const createVillageAdmin = handler(async (event, context) => {
 
   // Validate User First
   const identityId = event.requestContext.identity.cognitoIdentityId;
-  validateAdmin(identityId, data.village);
+  await validateAdmin(identityId, data.village);
 
-  // await connectToDatabase();
   const foundUser = VillageUser.findOne({
     user_id: data.user_id
   });
@@ -57,17 +38,30 @@ export const createVillageAdmin = handler(async (event, context) => {
   return { message: "OK" };
 });
 
-export const getVillageAdmin = handler(async (event, context) => {  
-  console.log(event.body);
-  const data = JSON.parse(event.body);
+export const listVillageAdmin = handler(async (event, context) => {
+  const villageId = event.pathParameters.idv;
 
   // Validate User First
   const identityId = event.requestContext.identity.cognitoIdentityId;
-  validateAdmin(identityId, data.village);
+  await validateAdmin(identityId, villageId);
 
-  // await connectToDatabase();
+  const foundAdmins = await VillageUser.find(
+    { subscription_plan: VILLAGE_ADMIN, village: villageId }
+  );
+
+  return { message: "OK", admin_list: foundAdmins };
+});
+
+export const getVillageAdmin = handler(async (event, context) => {
+  const userId = event.pathParameters.idu;
+  const villageId = event.pathParameters.idv;
+
+  // Validate User First
+  const identityId = event.requestContext.identity.cognitoIdentityId;
+  await validateAdmin(identityId, villageId);
+
   const foundUser = await VillageUser.findOne(
-    { user_id: data.user_id, subscription_plan: VILLAGE_ADMIN, village: data.village }
+    { user_id: userId, subscription_plan: VILLAGE_ADMIN, village: villageId }
   );
 
   if (!foundUser) {
@@ -77,33 +71,19 @@ export const getVillageAdmin = handler(async (event, context) => {
   return { message: "OK", admin: foundUser };
 });
 
-export const listVillageAdmin = handler(async (event, context) => {
+export const updateVillageAdmin = handler(async (event, context) => {
+  const userId = event.pathParameters.idu;
+  const villageId = event.pathParameters.idv;
+
   console.log(event.body);
   const data = JSON.parse(event.body);
 
   // Validate User First
   const identityId = event.requestContext.identity.cognitoIdentityId;
-  validateAdmin(identityId, data.village);
+  await validateAdmin(identityId, villageId);
 
-  // await connectToDatabase();
-  const foundUser = await VillageUser.find(
-    { subscription_plan: VILLAGE_ADMIN, village: data.village }
-  );
-
-  return { message: "OK", admin_list: foundUser };
-});
-
-export const updateVillageAdmin = handler(async (event, context) => {  
-  console.log(event.body);
-  const data = JSON.parse(event.body);
-
-  // Validate User First
-  const identityId = event.requestContext.identity.cognitoIdentityId;
-  validateAdmin(identityId, data.village);
-
-  // await connectToDatabase();
   const foundUser = await VillageUser.findOne(
-    { user_id: data.user_id, subscription_plan: VILLAGE_ADMIN, village: data.village }
+    { user_id: userId, subscription_plan: VILLAGE_ADMIN, village: villageId }
   );
 
   if (!foundUser) {
@@ -118,15 +98,14 @@ export const updateVillageAdmin = handler(async (event, context) => {
   return { message: "OK" };
 });
 
-export const revokeVillageAdmin = handler(async (event, context) => {  
+export const revokeVillageAdmin = handler(async (event, context) => {
   console.log(event.body);
   const data = JSON.parse(event.body);
 
   // Validate User First
   const identityId = event.requestContext.identity.cognitoIdentityId;
-  validateAdmin(identityId, data.village);
+  await validateAdmin(identityId, data.village);
 
-  // await connectToDatabase();
   const foundUser = await VillageUser.findOne(
     { user_id: data.user_id, subscription_plan: VILLAGE_ADMIN, village: data.village }
   );
@@ -144,16 +123,16 @@ export const revokeVillageAdmin = handler(async (event, context) => {
 /*
   ************
   VILLAGE USER
-  ************ 
+  ************
   */
 
-export const createVillageUser = handler(async (event, context) => {  
+export const createVillageUser = handler(async (event, context) => {
   console.log(event.body);
   const data = JSON.parse(event.body);
 
   // Validate User First
   const identityId = event.requestContext.identity.cognitoIdentityId;
-  validateAdmin(identityId, data.village);
+  await validateAdmin(identityId, data.village);
 
   const newUser = {};
 
@@ -168,7 +147,7 @@ export const createVillageUser = handler(async (event, context) => {
   // username = phone_number
   // password = password
 
-  const userId;
+  const userId = null;
   newUser.user_id = userId;
 
   await VillageUser.create(newUser);
@@ -176,17 +155,30 @@ export const createVillageUser = handler(async (event, context) => {
   return { message: "OK" };
 });
 
-export const getVillageUser = handler(async (event, context) => {  
-  console.log(event.body);
-  const data = JSON.parse(event.body);
+export const listVillageUser  = handler(async (event, context) => {
+  const villageId = event.pathParameters.idv;
 
   // Validate User First
   const identityId = event.requestContext.identity.cognitoIdentityId;
-  validateAdmin(identityId, data.village);
+  await validateAdmin(identityId, villageId);
 
-  // await connectToDatabase();
+  const foundUsers = await VillageUser.find(
+    { subscription_plan: VILLAGE_USER, village: villageId }
+  );
+
+  return { message: "OK", user_list: foundUsers };
+});
+
+export const getVillageUser = handler(async (event, context) => {
+  const userId = event.pathParameters.idu;
+  const villageId = event.pathParameters.idv;
+
+  // Validate User First
+  const identityId = event.requestContext.identity.cognitoIdentityId;
+  await validateAdmin(identityId, villageId);
+
   const foundUser = await VillageUser.findOne(
-    { user_id: data.user_id, subscription_plan: VILLAGE_USER, village: data.village }
+    { user_id: userId, subscription_plan: VILLAGE_USER, village: villageId }
   );
 
   if (!foundUser) {
@@ -196,33 +188,19 @@ export const getVillageUser = handler(async (event, context) => {
   return { message: "OK", user: foundUser };
 });
 
-export const listVillageUser  = handler(async (event, context) => {  
+export const updateVillageUser = handler(async (event, context) => {
+  const userId = event.pathParameters.idu;
+  const villageId = event.pathParameters.idv;
+
   console.log(event.body);
   const data = JSON.parse(event.body);
 
   // Validate User First
   const identityId = event.requestContext.identity.cognitoIdentityId;
-  validateAdmin(identityId, data.village);
+  await validateAdmin(identityId, villageId);
 
-  // await connectToDatabase();
-  const foundUser = await VillageUser.find(
-    { subscription_plan: VILLAGE_USER, village: data.village }
-  );
-
-  return { message: "OK", user_list: foundUser };
-});
-
-export const updateVillageUser = handler(async (event, context) => {  
-  console.log(event.body);
-  const data = JSON.parse(event.body);
-
-  // Validate User First
-  const identityId = event.requestContext.identity.cognitoIdentityId;
-  validateAdmin(identityId, data.village);
-
-  // await connectToDatabase();
   const foundUser = await VillageUser.findOne(
-    { user_id: data.user_id, subscription_plan: VILLAGE_USER, village: data.village }
+    { user_id: userId, subscription_plan: VILLAGE_USER, village: villageId }
   );
 
   if (!foundUser) {
@@ -237,17 +215,16 @@ export const updateVillageUser = handler(async (event, context) => {
   return { message: "OK" };
 });
 
-export const deleteVillageUser = handler(async (event, context) => {  
-  console.log(event.body);
-  const data = JSON.parse(event.body);
+export const deleteVillageUser = handler(async (event, context) => {
+  const userId = event.pathParameters.idu;
+  const villageId = event.pathParameters.idv;
 
   // Validate User First
   const identityId = event.requestContext.identity.cognitoIdentityId;
-  validateAdmin(identityId, data.village);
+  await validateAdmin(identityId, villageId);
 
-  // await connectToDatabase();
   await VillageUser.deleteOne(
-    { user_id: data.user_id, subscription_plan: VILLAGE_USER, village: data.village }
+    { user_id: userId, village: villageId }
   );
 
   return { message: "OK" };
