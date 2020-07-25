@@ -2,7 +2,7 @@ import handler from "../libs/handler-lib";
 import RegularJob from "../models/RegularJob";
 import { validateJobposter } from "../libs/villagevalidator";
 import RegularUser from "../models/RegularUser";
-import RegularAcceptance from "../models/RegularAcceptance";
+import RegularApplication from "../models/RegularApplication";
 
 export const createRegularJob = handler(async (event, context) => {
   console.log(event.body);
@@ -115,13 +115,13 @@ export const completeRegularJob = handler(async (event, context) => {
   } else if (foundJob.owner == foundUser._id) {
     foundJob.status = data.status;
 
-    const newRegularAcceptance = {};
+    const newRegularApplication = {};
 
-    newRegularAcceptance.regular_user = data.regular_user;
-    newRegularAcceptance.regular_job = data.regular_job;
-    newRegularAcceptance.date = Date.now();
+    newRegularApplication.regular_user = data.regular_user;
+    newRegularApplication.regular_job = data.regular_job;
+    newRegularApplication.status = 'accepted';
 
-    await RegularAcceptance.create(newRegularAcceptance);
+    await RegularApplication.create(newRegularApplication);
   } else {
     throw new Error("Unauthorized update action");
   }
