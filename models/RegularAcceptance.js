@@ -13,7 +13,7 @@ const RegularUser = require('./RegularUser');
 const Id = Schema.Types.ObjectId;
 const documentSchema = new Schema(
   {
-    regular_user: { type: Id, required: true, ref: 'RegularUser' },
+    regular_user: { type: Id, required: false, ref: 'RegularUser' },
     regular_job: {type: Id, required: true, ref: 'RegularJob'},
     date: { type: Date, required: true },
   },

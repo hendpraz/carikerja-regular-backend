@@ -13,7 +13,7 @@ const VillageUser = require('./VillageUser');
 const Id = Schema.Types.ObjectId;
 const documentSchema = new Schema(
   {
-    village_user: { type: Id, required: true, ref: 'VillageUser' },
+    village_user: { type: Id, required: false, ref: 'VillageUser' },
     village_job: {type: Id, required: true, ref: 'VillageJob'},
     date: { type: Date, required: true },
   },
