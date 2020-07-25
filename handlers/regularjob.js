@@ -115,13 +115,11 @@ export const completeRegularJob = handler(async (event, context) => {
   } else if (foundJob.owner == foundUser._id) {
     foundJob.status = data.status;
 
-    const newRegularApplication = {};
+    const foundRegularApplication = RegularApplication.findById(data.regular_application);
+    
+    foundRegularApplication.status = 'accepted';
 
-    newRegularApplication.regular_user = data.regular_user;
-    newRegularApplication.regular_job = data.regular_job;
-    newRegularApplication.status = 'accepted';
-
-    await RegularApplication.create(newRegularApplication);
+    await foundRegularApplication.save();
   } else {
     throw new Error("Unauthorized update action");
   }
