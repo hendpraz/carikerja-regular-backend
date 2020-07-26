@@ -96,35 +96,3 @@ export const updateRegularJobStatus = handler(async (event, context) => {
 
   return { message: "OK" };
 });
-
-export const completeRegularJob = handler(async (event, context) => {
-  const jobId = event.pathParameters.idj;
-  
-  console.log(event.body);
-  const data = JSON.parse(event.body);
-
-  // Validate User First
-  const identityId = event.requestContext.identity.cognitoIdentityId;
-  await validateJobposter(identityId);
-
-  const foundUser = await RegularUser.findOne({ user_id: identityId});
-  const foundJob = await RegularJob.findById(jobId);
-  
-  if ((!foundUser) || (!foundJob)) {
-    throw new Error("User or job not found");
-  } else if (foundJob.owner == foundUser._id) {
-    foundJob.status = data.status;
-
-    const foundRegularApplication = await RegularApplication.findById(data.regular_application);
-    
-    foundRegularApplication.status = 'accepted';
-
-    await foundRegularApplication.save();
-  } else {
-    throw new Error("Unauthorized update action");
-  }
-
-  await foundJob.save();
-
-  return { message: "OK" };
-});
