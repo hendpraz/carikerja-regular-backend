@@ -9,7 +9,7 @@ const VILLAGE_SUPERUSER = 7;
 export const validateAdmin = async (identityId, village, activity_description) => {
   await connectToDatabase();
 
-  const foundUser = VillageUser.findOne({
+  const foundUser = await VillageUser.findOne({
     user_id: identityId
   });
 
@@ -37,7 +37,7 @@ export const validateAdmin = async (identityId, village, activity_description) =
 export const validateSuperuser = async (identityId) => {
   await connectToDatabase();
 
-  const foundUser = VillageUser.findOne({
+  const foundUser = await VillageUser.findOne({
     user_id: identityId
   });
 

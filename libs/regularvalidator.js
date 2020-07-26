@@ -8,7 +8,7 @@ const REGULAR_SUPERUSER = 8;
 export const validateJobposter = async (identityId) => {
   await connectToDatabase();
 
-  const foundUser = RegularUser.findOne({
+  const foundUser = await RegularUser.findOne({
     user_id: identityId
   });
 
@@ -24,7 +24,7 @@ export const validateJobposter = async (identityId) => {
 export const validateSuperuser = async (identityId) => {
   await connectToDatabase();
 
-  const foundUser = RegularUser.findOne({
+  const foundUser = await RegularUser.findOne({
     user_id: identityId
   });
 
