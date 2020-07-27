@@ -9,26 +9,44 @@ export const createRegularUser = handler(async (event, context) => {
   console.log(event.body);
   const data = JSON.parse(event.body);
 
-  const newUser = {};
+  // Validate User First
+  const identityId = event.requestContext.identity.cognitoIdentityId;
 
-  newUser.name = data.name;
-  newUser.email = data.email;
-  newUser.phone_number = data.phone_number;
-  newUser.whatsapp_number = data.whatsapp_number;
-  newUser.profile_picture = "default.jpg";
-  newUser.address = data.address;
-  newUser.status = 'active';
-  newUser.subscription_plan = REGULAR_USER;
+  const foundUser = RegularUser.findOne({ identity_id: identityId });
+  if ( foundUser ) {
+    throw new Error("User already signed up");
+  } else {
+    const newUser = {};
+
+    newUser.name = data.name;
+    newUser.email = data.email;
+    newUser.phone_number = data.phone_number;
+    newUser.whatsapp_number = data.whatsapp_number;
+    newUser.profile_picture = "default.jpg";
+    newUser.address = data.address;
+    newUser.status = 'active';
+    newUser.subscription_plan = REGULAR_USER;
   
-  // TODO: Cognito signup
-
-  // CREATE REGULAR PLAN
-
-  newUser.identity_id = "";
-
-  await RegularUser.create(newUser);
+    newUser.identity_id = identityId;
+  
+    await RegularUser.create(newUser);
+  }
 
   return { message: "OK" };
+});
+
+export const getMyProfile = handler(async (event, context) => {
+  const identityId = event.requestContext.identity.cognitoIdentityId;
+  const foundUser = RegularUser.findOne({ identity_id: identityId });
+
+  return { message: "OK", foundUser: foundUser };
+});
+
+export const getUserProfile = handler(async (event, context) => {
+  const userIdentityId = event.pathParameters.uid;
+  const foundUser = RegularUser.findOne({ identity_id: userIdentityId});
+
+  return { message: "OK", foundUser: foundUser };
 });
 
 export const updateRegularUser = handler(async (event, context) => {
