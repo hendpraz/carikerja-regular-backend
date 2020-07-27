@@ -109,15 +109,12 @@ export const createVillageAdmin = handler(async (event, context) => {
 export const revokeVillageAdmin = handler(async (event, context) => {
   const userId = event.pathParameters.idu;
 
-  console.log(event.body);
-  const data = JSON.parse(event.body);
-
   // Validate User First
   const identityId = event.requestContext.identity.cognitoIdentityId;
   await validateSuperuser(identityId);
 
   const foundUser = await VillageUser.findOne(
-    { _id: userId, subscription_plan: VILLAGE_ADMIN }
+    { _id: userId, subscription_plan: VILLAGE_ADMIN, village: villageId }
   );
 
   if (!foundUser) {
