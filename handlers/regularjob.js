@@ -2,7 +2,6 @@ import handler from "../libs/handler-lib";
 import RegularJob from "../models/RegularJob";
 import { validateJobposter } from "../libs/villagevalidator";
 import RegularUser from "../models/RegularUser";
-import RegularApplication from "../models/RegularApplication";
 
 export const createRegularJob = handler(async (event, context) => {
   console.log(event.body);
