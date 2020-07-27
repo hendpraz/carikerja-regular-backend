@@ -1,6 +1,7 @@
 import { connectToDatabase } from './db';
 import VillageActivity from '../models/VillageActivity';
 import VillageUser from '../models/VillageUser';
+import VillagePlan from '../models/VillagePlan';
 
 // Village Subscription Plan
 const VILLAGE_ADMIN = 4;
@@ -12,6 +13,11 @@ export const validateAdmin = async (identityId, village, activity_description) =
   const foundUser = await VillageUser.findOne({
     user_id: identityId
   });
+
+  const foundVillagePlan = await Village.findOne({village: village});
+  if (foundVillagePlan.status === 'inactive') {
+    throw new Error("Inactive village access");
+  }
 
   if (foundUser) {
     if ((foundUser.subscription_plan != VILLAGE_ADMIN)) {

@@ -16,7 +16,7 @@ const documentSchema = new Schema(
   {
     village: { type: Id, required: true, ref: 'Village' },
     subscription_plan: {type: Id, required: true, ref: 'SubscriptionPlan'},
-    expiry_date: { type: String, required: true },
+    expiry_date: { type: Date, required: true },
     status: { type: String, required: true }
   },
   { timestamps: true }

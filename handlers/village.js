@@ -1,5 +1,6 @@
 import handler from "../libs/handler-lib";
 import Village from "../models/Village";
+import VillagePlan from "../models/VillagePlan";
 import { validateAdmin } from "../libs/villagevalidator";
 import { validateSuperuser } from "../libs/villagevalidator";
 
@@ -11,13 +12,25 @@ export const createVillage = handler(async (event, context) => {
   await validateSuperuser(identityId);
 
   const newVillage = {};
-
   newVillage.name = data.name;
   newVillage.city = data.city;
   newVillage.province = data.province;
   newVillage.country = data.country;
 
-  await Village.create(newVillage);
+  const newVillageObj = await Village.create(newVillage);
+
+  const newVillagePlan = {};
+  newVillagePlan.village = newVillageObj._id;
+  newVillagePlan.subscription_plan = data.subscription_plan;
+  
+  // BUSINESS LOGIC
+  let tempDate = Date.now();
+  tempDate.setDate(tempDate.getDate() + 30);
+
+  newVillagePlan.expiry_date = tempDate;
+  newVillagePlan.status = 'active';
+
+  await VillagePlan.create(newVillagePlan);
 
   return { message: "OK" };
 });
