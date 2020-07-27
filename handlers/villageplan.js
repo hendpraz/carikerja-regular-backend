@@ -39,8 +39,19 @@ export const stopVillageSubscription = handler(async (event, context) => {
   const foundVillagePlan = await Village.findOne({ village: villageId });
 
   foundVillagePlan.status = 'inactive';
+  await villagePlan.save();
 
-  villagePlan.subscription_plan = data.subscription_plan;
+  return { message: "OK" };
+});
+
+export const reactivateVillageSubscription = handler(async (event, context) => {
+  const identityId = event.requestContext.identity.cognitoIdentityId;
+  await validateSuperuser(identityId);
+
+  const villageId = event.pathParameters.idv;
+  const foundVillagePlan = await Village.findOne({ village: villageId });
+
+  foundVillagePlan.status = 'active';
   await villagePlan.save();
 
   return { message: "OK" };

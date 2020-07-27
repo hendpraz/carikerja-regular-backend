@@ -1,9 +1,9 @@
 import handler from "../libs/handler-lib";
 import RegularUser from "../models/RegularUser";
-import { validateSuperuser } from "../libs/villagevalidator";
+import RegularPlan from "../models/RegularPlan";
+import { validateSuperuser } from "../libs/regularvalidator";
 
 const REGULAR_USER = 1;
-const REGULAR_JOBPOSTER = 2;
 
 export const createRegularUser = handler(async (event, context) => {
   console.log(event.body);
@@ -21,6 +21,8 @@ export const createRegularUser = handler(async (event, context) => {
   newUser.subscription_plan = REGULAR_USER;
   
   // TODO: Cognito signup
+
+  // CREATE REGULAR PLAN
 
   newUser.user_id = "";
 
@@ -40,7 +42,7 @@ export const updateRegularUser = handler(async (event, context) => {
   console.log(event.body);
   const data = JSON.parse(event.body);
 
-  const foundUser = await VillageUser.findOne(
+  const foundUser = await RegularUser.findOne(
     { user_id: userId }
   );
 
@@ -56,48 +58,6 @@ export const updateRegularUser = handler(async (event, context) => {
   return { message: "OK" };
 });
 
-export const createRegularJobposter = handler(async (event, context) => {
-  // Validate User First
-  const identityId = event.requestContext.identity.cognitoIdentityId;
-  await validateSuperuser(identityId);
-
-  const userId = event.pathParameters.idu;
-
-  const foundUser = await VillageUser.findOne(
-    { user_id: userId, subscription_plan: REGULAR_USER }
-  );
-
-  if (!foundUser) {
-    throw new Error("User not found");
-  }
-
-  foundUser.subscription_plan = REGULAR_JOBPOSTER;
-  await foundUser.save();
-
-  return { message: "OK" };
-});
-
-export const revokeJobposter = handler(async (event, context) => {
-  // Validate User First
-  const identityId = event.requestContext.identity.cognitoIdentityId;
-  await validateSuperuser(identityId);
-
-  const userId = event.pathParameters.idu;
-
-  const foundUser = await VillageUser.findOne(
-    { user_id: userId, subscription_plan: REGULAR_USER}
-  );
-
-  if (!foundUser) {
-    throw new Error("User not found");
-  }
-
-  foundUser.subscription_plan = REGULAR_USER;
-  await foundUser.save();
-
-  return { message: "OK" };
-});
-
 export const deactivateRegularUser = handler(async (event, context) => {
   // Validate User First
   const identityId = event.requestContext.identity.cognitoIdentityId;
@@ -105,7 +65,7 @@ export const deactivateRegularUser = handler(async (event, context) => {
 
   const userId = event.pathParameters.idu;
 
-  const foundUser = await VillageUser.findOne(
+  const foundUser = await RegularUser.findOne(
     { user_id: userId, subscription_plan: REGULAR_USER}
   );
 
@@ -115,6 +75,10 @@ export const deactivateRegularUser = handler(async (event, context) => {
 
   foundUser.status = 'inactive';
   await foundUser.save();
+
+  const foundRegularPlan = await RegularPlan.findOne({regular_user: foundUser._id });
+  foundRegularPlan.status = 'inactive';
+  foundRegularPlan.save();
 
   return { message: "OK" };
 });
