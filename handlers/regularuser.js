@@ -33,9 +33,9 @@ export const createRegularUser = handler(async (event, context) => {
 
 export const updateRegularUser = handler(async (event, context) => {
   // Validate User First
-  const userId = event.pathParameters.idu;
+  const userIdentityId = event.pathParameters.uid;
   const identityId = event.requestContext.identity.cognitoIdentityId;
-  if (identityId != userId) {
+  if (identityId != userIdentityId) {
     throw new Error("Unauthorized update action by user");
   }
 
@@ -43,7 +43,7 @@ export const updateRegularUser = handler(async (event, context) => {
   const data = JSON.parse(event.body);
 
   const foundUser = await RegularUser.findOne(
-    { identity_id: userId }
+    { identity_id: userIdentityId }
   );
 
   if (!foundUser) {
@@ -63,10 +63,10 @@ export const deactivateRegularUser = handler(async (event, context) => {
   const identityId = event.requestContext.identity.cognitoIdentityId;
   await validateSuperuser(identityId);
 
-  const userId = event.pathParameters.idu;
+  const userIdentityId = event.pathParameters.uid;
 
   const foundUser = await RegularUser.findOne(
-    { identity_id: userId, subscription_plan: REGULAR_USER}
+    { identity_id: userIdentityId, subscription_plan: REGULAR_USER}
   );
 
   if (!foundUser) {

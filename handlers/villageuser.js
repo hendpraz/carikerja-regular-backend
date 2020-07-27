@@ -80,6 +80,8 @@ export const updateVillageAdmin = handler(async (event, context) => {
   */
 
 export const createVillageAdmin = handler(async (event, context) => {
+  const userId = event.pathParameters.idu;
+
   console.log(event.body);
   const data = JSON.parse(event.body);
 
@@ -87,7 +89,7 @@ export const createVillageAdmin = handler(async (event, context) => {
   const identityId = event.requestContext.identity.cognitoIdentityId;
   await validateSuperuser(identityId);
 
-  const foundUser = VillageUser.findById(data.user_id);
+  const foundUser = VillageUser.findById(userId);
 
   if (foundUser) {
     if (foundUser.village == data.village) {
@@ -105,6 +107,8 @@ export const createVillageAdmin = handler(async (event, context) => {
 });
 
 export const revokeVillageAdmin = handler(async (event, context) => {
+  const userId = event.pathParameters.idu;
+
   console.log(event.body);
   const data = JSON.parse(event.body);
 
@@ -113,7 +117,7 @@ export const revokeVillageAdmin = handler(async (event, context) => {
   await validateSuperuser(identityId);
 
   const foundUser = await VillageUser.findOne(
-    { _id: data.identity_id, subscription_plan: VILLAGE_ADMIN, village: data.village }
+    { _id: userId, subscription_plan: VILLAGE_ADMIN }
   );
 
   if (!foundUser) {

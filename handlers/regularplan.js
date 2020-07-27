@@ -11,10 +11,10 @@ export const createRegularJobposter = handler(async (event, context) => {
   const identityId = event.requestContext.identity.cognitoIdentityId;
   await validateSuperuser(identityId);
 
-  const userId = event.pathParameters.idu;
+  const userIdentityId = event.pathParameters.uid;
 
   const foundUser = await RegularUser.findOne(
-    { identity_id: userId, subscription_plan: REGULAR_USER }
+    { identity_id: userIdentityId, subscription_plan: REGULAR_USER }
   );
 
   if (!foundUser) {
@@ -43,10 +43,10 @@ export const revokeJobposter = handler(async (event, context) => {
   const identityId = event.requestContext.identity.cognitoIdentityId;
   await validateSuperuser(identityId);
 
-  const userId = event.pathParameters.idu;
+  const userIdentityId = event.pathParameters.uid;
 
   const foundUser = await RegularUser.findOne(
-    { identity_id: userId, subscription_plan: REGULAR_USER}
+    { identity_id: userIdentityId, subscription_plan: REGULAR_USER}
   );
 
   if (!foundUser) {
