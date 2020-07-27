@@ -24,7 +24,7 @@ export const createRegularUser = handler(async (event, context) => {
 
   // CREATE REGULAR PLAN
 
-  newUser.user_id = "";
+  newUser.identity_id = "";
 
   await RegularUser.create(newUser);
 
@@ -43,7 +43,7 @@ export const updateRegularUser = handler(async (event, context) => {
   const data = JSON.parse(event.body);
 
   const foundUser = await RegularUser.findOne(
-    { user_id: userId }
+    { identity_id: userId }
   );
 
   if (!foundUser) {
@@ -66,7 +66,7 @@ export const deactivateRegularUser = handler(async (event, context) => {
   const userId = event.pathParameters.idu;
 
   const foundUser = await RegularUser.findOne(
-    { user_id: userId, subscription_plan: REGULAR_USER}
+    { identity_id: userId, subscription_plan: REGULAR_USER}
   );
 
   if (!foundUser) {

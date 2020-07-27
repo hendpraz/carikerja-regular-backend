@@ -11,7 +11,7 @@ export const validateAdmin = async (identityId, village, activity_description) =
   await connectToDatabase();
 
   const foundUser = await VillageUser.findOne({
-    user_id: identityId
+    identity_id: identityId
   });
 
   const foundVillagePlan = await Village.findOne({village: village});
@@ -46,7 +46,7 @@ export const validateSuperuser = async (identityId) => {
   await connectToDatabase();
 
   const foundUser = await VillageUser.findOne({
-    user_id: identityId
+    identity_id: identityId
   });
 
   if (foundUser) {

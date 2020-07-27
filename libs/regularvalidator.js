@@ -10,7 +10,7 @@ export const validateJobposter = async (identityId) => {
   await connectToDatabase();
 
   const foundUser = await RegularUser.findOne({
-    user_id: identityId
+    identity_id: identityId
   });
 
   if (foundUser) {
@@ -35,7 +35,7 @@ export const validateSuperuser = async (identityId) => {
   await connectToDatabase();
 
   const foundUser = await RegularUser.findOne({
-    user_id: identityId
+    identity_id: identityId
   });
 
   if (foundUser) {

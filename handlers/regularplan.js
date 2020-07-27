@@ -14,7 +14,7 @@ export const createRegularJobposter = handler(async (event, context) => {
   const userId = event.pathParameters.idu;
 
   const foundUser = await RegularUser.findOne(
-    { user_id: userId, subscription_plan: REGULAR_USER }
+    { identity_id: userId, subscription_plan: REGULAR_USER }
   );
 
   if (!foundUser) {
@@ -46,7 +46,7 @@ export const revokeJobposter = handler(async (event, context) => {
   const userId = event.pathParameters.idu;
 
   const foundUser = await RegularUser.findOne(
-    { user_id: userId, subscription_plan: REGULAR_USER}
+    { identity_id: userId, subscription_plan: REGULAR_USER}
   );
 
   if (!foundUser) {

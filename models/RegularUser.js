@@ -13,7 +13,7 @@ const SubscriptionPlan = require('./SubscriptionPlan');
  * @property {String} address Alamat pengguna
  * @property {String} status Status pengguna reguler
  * @property {String} subscription_plan Reference ke subscription plan
- * @property {String} user_id cognito identity id pengguna
+ * @property {String} identity_id cognito identity id pengguna
  */
 const Id = Schema.Types.ObjectId;
 const documentSchema = new Schema(
@@ -27,7 +27,7 @@ const documentSchema = new Schema(
     status: { type: String, required: true },
     subscription_plan: { type: Id, required: true, ref: 'SubscriptionPlan' },
     plan_expiry_date : Date,
-    user_id: { type: String, required: true }
+    identity_id: { type: String, required: true }
   },
   { timestamps: true }
 );

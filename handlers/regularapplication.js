@@ -8,7 +8,7 @@ const REGULAR_JOBPOSTER = 2;
 export const listMyApplications = handler(async (event, context) => {
   const identityId = event.requestContext.identity.cognitoIdentityId;
   
-  const userFound = await RegularUser.findOne({ user_id: identityId });
+  const userFound = await RegularUser.findOne({ identity_id: identityId });
   const applicationFound = await RegularApplication.find({ regular_user: userFound._id });
 
   return { message: "OK", applications: applicationFound };
@@ -21,7 +21,7 @@ export const listMyJobApplications = handler(async (event, context) => {
   const identityId = event.requestContext.identity.cognitoIdentityId;
   await validateJobposter(identityId);
 
-  const foundUser = RegularUser.findOne({ user_id: identityId});
+  const foundUser = RegularUser.findOne({ identity_id: identityId});
   const foundJob = RegularJob.findById(jobId);
   
   let foundRegularApplication;
@@ -74,7 +74,7 @@ export const acceptApplication = handler(async (event, context) => {
   const identityId = event.requestContext.identity.cognitoIdentityId;
   await validateJobposter(identityId);
 
-  const foundUser = await RegularUser.findOne({ user_id: identityId});
+  const foundUser = await RegularUser.findOne({ identity_id: identityId});
   const foundRegularApplication = await RegularApplication.findById(applicationId)
     .populate('regular_job');
   
@@ -103,7 +103,7 @@ export const rejectApplication = handler(async (event, context) => {
   const identityId = event.requestContext.identity.cognitoIdentityId;
   await validateJobposter(identityId);
 
-  const foundUser = await RegularUser.findOne({ user_id: identityId});
+  const foundUser = await RegularUser.findOne({ identity_id: identityId});
   const foundRegularApplication = await RegularApplication.findById(applicationId)
     .populate('regular_job');
   

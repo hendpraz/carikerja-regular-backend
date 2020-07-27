@@ -11,7 +11,7 @@ export const createRegularJob = handler(async (event, context) => {
   const identityId = event.requestContext.identity.cognitoIdentityId;
   await validateJobposter(identityId);
 
-  const foundUser = await RegularUser.findOne({ user_id: identityId});
+  const foundUser = await RegularUser.findOne({ identity_id: identityId});
 
   const newJob = {};
 
@@ -50,7 +50,7 @@ export const updateRegularJobDetail = handler(async (event, context) => {
   const identityId = event.requestContext.identity.cognitoIdentityId;
   await validateJobposter(identityId);
 
-  const foundUser = await RegularUser.findOne({ user_id: identityId});
+  const foundUser = await RegularUser.findOne({ identity_id: identityId});
   const foundJob = await RegularJob.findById(jobId);
   
   if ((!foundUser) || (!foundJob)) {
@@ -80,7 +80,7 @@ export const updateRegularJobStatus = handler(async (event, context) => {
   const identityId = event.requestContext.identity.cognitoIdentityId;
   await validateJobposter(identityId);
 
-  const foundUser = await RegularUser.findOne({ user_id: identityId});
+  const foundUser = await RegularUser.findOne({ identity_id: identityId});
   const foundJob = await RegularJob.findById(jobId);
   
   if ((!foundUser) || (!foundJob)) {
