@@ -81,5 +81,42 @@ export const findjobsbot = async (event, context) => {
 
 /* FOR WEB APP */
 export const findjobsweb = handler(async (event, context) => {
-  return { foo: "bar" };
+  console.log(event.body);
+  const data = JSON.parse(event.body);
+
+  await connectToDatabase();
+
+  const location = data.queryStringParameters.location;
+  const profession = data.queryStringParameters.profession;
+
+  // Build query
+  let q = event.queryStringParameters.q;
+  q = `${q} ${profession} ${location}`;
+  let page = event.queryStringParameters.page;
+  parseInt(page, 10) > 0 ? parseInt(page, 10) : 1;
+
+  const limit = 10;
+  let searchQuery;
+
+  if (q === '*') {
+    searchQuery = {};
+  } else {
+    searchQuery = {
+      $text: {
+        $search: q
+          .split(' ')
+          .map(str => `"${str}"`)
+          .join(' ')
+      }
+    };
+  }
+
+  const foundJobs = await RegularJob.find(searchQuery)
+    .populate('owner')
+    .limit(limit)
+    .skip((page - 1) * limit);
+
+  console.log(foundJobs);
+  
+  return { message: "OK", jobs: foundJobs };
 });
