@@ -3,18 +3,20 @@ import RegularUser from "../models/RegularUser";
 import RegularPlan from "../models/RegularPlan";
 import { validateSuperuser } from "../libs/regularvalidator";
 import { connectToDatabase } from "../libs/db";
+import SubscriptionPlan from "../models/SubscriptionPlan";
 
 const REGULAR_USER = 1;
 
 export const createRegularUser = handler(async (event, context) => {
   await connectToDatabase();
 
-  console.log(event.body);
+  console.log(event);
   const data = JSON.parse(event.body);
 
   // Validate User First
   const identityId = event.requestContext.identity.cognitoIdentityId;
 
+  const subscriptionPlan = await SubscriptionPlan.findOne({subs_id: REGULAR_USER});
   const newUser = {};
   // newUser.name = data.name;
   // newUser.phone_number = data.phone_number;
@@ -23,7 +25,7 @@ export const createRegularUser = handler(async (event, context) => {
   newUser.email = data.email;
   newUser.profile_picture = "default.jpg";
   newUser.status = 'active';
-  newUser.subscription_plan = REGULAR_USER;
+  newUser.subscription_plan = subscriptionPlan._id;
 
   newUser.identity_id = identityId;
 

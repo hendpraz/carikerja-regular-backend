@@ -37,6 +37,7 @@ functions:
           path: job-search
           method: get
           cors: true
+          authorizer: aws_iam
   #### regularapplication.js
   listmyapplications:
     handler: handlers/regularapplication.listMyApplications
@@ -45,6 +46,7 @@ functions:
           path: my-applications
           method: get
           cors: true
+          authorizer: aws_iam
   listmyjobapplications:
     handler: handlers/regularapplication.listMyJobApplications
     events:
@@ -52,6 +54,7 @@ functions:
           path: my-jobs/applications/{idj}
           method: get
           cors: true
+          authorizer: aws_iam
   getapplication:
     handler: handlers/regularapplication.getApplication
     events:
@@ -59,6 +62,7 @@ functions:
           path: applications/{ida}
           method: get
           cors: true
+          authorizer: aws_iam
   acceptapplication:
     handler: handlers/regularapplication.acceptApplication
     events:
@@ -66,6 +70,7 @@ functions:
           path: accept-application/{ida}
           method: patch
           cors: true
+          authorizer: aws_iam
   rejectapplication:
     handler: handlers/regularapplication.rejectApplication
     events:
@@ -73,6 +78,7 @@ functions:
           path: reject-application/{ida}
           method: patch
           cors: true
+          authorizer: aws_iam
   #### regularjob.js
   createregularjob:
     handler: handlers/regularjob.createRegularJob
@@ -81,6 +87,7 @@ functions:
           path: jobs/create
           method: post
           cors: true
+          authorizer: aws_iam
   getregularjob:
     handler: handlers/regularjob.getRegularJob
     events:
@@ -88,6 +95,7 @@ functions:
           path: jobs/{idj}
           method: get
           cors: true
+          authorizer: aws_iam
   listmyjob:
     handler: handlers/regularjob.listMyJob
     events:
@@ -95,6 +103,7 @@ functions:
           path: my-jobs
           method: get
           cors: true
+          authorizer: aws_iam
   updateregularjobdetail:
     handler: handlers/regularjob.updateRegularJobDetail
     events:
@@ -102,6 +111,7 @@ functions:
           path: update-job-detail/{idj}
           method: patch
           cors: true
+          authorizer: aws_iam
   updateregularjobstatus:
     handler: handlers/regularjob.updateRegularJobStatus
     events:
@@ -109,6 +119,7 @@ functions:
           path: update-job-status/{idj}
           method: patch
           cors: true
+          authorizer: aws_iam
   #### regularplan.js
   createregularjobposter:
     handler: handlers/regularplan.createRegularJobposter
@@ -117,6 +128,7 @@ functions:
           path: create-jobposter/{idu}
           method: patch
           cors: true
+          authorizer: aws_iam
   revokejobposter:
     handler: handlers/regularplan.revokeJobposter
     events:
@@ -124,6 +136,7 @@ functions:
           path: revoke-jobposter/{idu}
           method: patch
           cors: true
+          authorizer: aws_iam
   #### regularuser.js
   createregularuser:
     handler: handlers/regularuser.createRegularUser
@@ -132,6 +145,7 @@ functions:
           path: regular-users
           method: post
           cors: true
+          authorizer: aws_iam
   getmyprofile:
     handler: handlers/regularuser.getMyProfile
     events:
@@ -139,6 +153,7 @@ functions:
           path: regular-users/me
           method: get
           cors: true
+          authorizer: aws_iam
   getuserprofile:
     handler: handlers/regularuser.getUserProfile
     events:
@@ -146,6 +161,7 @@ functions:
           path: regular-users/{idu}
           method: get
           cors: true
+          authorizer: aws_iam
   updatemyprofile:
     handler: handlers/regularuser.updateMyProfile
     events:
@@ -153,6 +169,7 @@ functions:
           path: update-my-profile
           method: patch
           cors: true
+          authorizer: aws_iam
   deactivateregularuser:
     handler: handlers/regularuser.deactivateRegularUser
     events:
@@ -160,6 +177,7 @@ functions:
           path: deactivate-regular-user/{idu}
           method: patch
           cors: true
+          authorizer: aws_iam
 
 # Create our resources with separate CloudFormation templates
 resources:
