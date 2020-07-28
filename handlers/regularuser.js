@@ -15,25 +15,19 @@ export const createRegularUser = handler(async (event, context) => {
   // Validate User First
   const identityId = event.requestContext.identity.cognitoIdentityId;
 
-  const foundUser = await RegularUser.findOne({ identity_id: identityId });
-  if ( foundUser ) {
-    throw new Error("User already signed up");
-  } else {
-    const newUser = {};
+  const newUser = {};
+  // newUser.name = data.name;
+  // newUser.phone_number = data.phone_number;
+  // newUser.whatsapp_number = data.whatsapp_number;
+  // newUser.address = data.address;
+  newUser.email = data.email;
+  newUser.profile_picture = "default.jpg";
+  newUser.status = 'active';
+  newUser.subscription_plan = REGULAR_USER;
 
-    newUser.name = data.name;
-    newUser.email = data.email;
-    newUser.phone_number = data.phone_number;
-    newUser.whatsapp_number = data.whatsapp_number;
-    newUser.profile_picture = "default.jpg";
-    newUser.address = data.address;
-    newUser.status = 'active';
-    newUser.subscription_plan = REGULAR_USER;
+  newUser.identity_id = identityId;
 
-    newUser.identity_id = identityId;
-
-    await RegularUser.create(newUser);
-  }
+  await RegularUser.create(newUser);
 
   return { message: "OK" };
 });
@@ -75,6 +69,7 @@ export const updateMyProfile = handler(async (event, context) => {
   foundUser.name = data.name;
   foundUser.phone_number = data.phone_number;
   foundUser.address = data.address;
+  foundUser.whatsapp_number = data.whatsapp_number;
   await foundUser.save();
 
   return { message: "OK" };
