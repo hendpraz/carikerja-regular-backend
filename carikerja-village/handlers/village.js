@@ -22,7 +22,7 @@ export const createVillage = handler(async (event, context) => {
   const newVillagePlan = {};
   newVillagePlan.village = newVillageObj._id;
   newVillagePlan.subscription_plan = data.subscription_plan;
-  
+
   // BUSINESS LOGIC
   let tempDate = Date.now();
   tempDate.setDate(tempDate.getDate() + 30);

@@ -1,7 +1,7 @@
 import handler from "../libs/handler-lib";
 import VillageUser from '../models/VillageUser';
 import { validateAdmin } from "../libs/villagevalidator";
-import { validateSuperuser } from "../libs/regularvalidator";
+import { validateSuperuser } from "../libs/villagevalidator";
 
 // Village Subscription Plan Number
 const VILLAGE_USER = 3;
@@ -114,7 +114,7 @@ export const revokeVillageAdmin = handler(async (event, context) => {
   await validateSuperuser(identityId);
 
   const foundUser = await VillageUser.findOne(
-    { _id: userId, subscription_plan: VILLAGE_ADMIN, village: villageId }
+    { _id: userId, subscription_plan: VILLAGE_ADMIN }
   );
 
   if (!foundUser) {

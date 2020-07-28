@@ -119,6 +119,9 @@ export const completeVillageJob = handler(async (event, context) => {
   const identityId = event.requestContext.identity.cognitoIdentityId;
   await validateAdmin(identityId, villageId, "Mengonfirmasi penerimaan pekerjaan.");
 
+  console.log(event.body);
+  const data = JSON.parse(event.body);
+
   const foundJob = await VillageJob.findById(jobId);
 
   if (!foundJob) {

@@ -1,8 +1,9 @@
 import handler from "../libs/handler-lib";
 import RegularUser from "../models/RegularUser";
 import RegularApplication from "../models/RegularApplication";
+import RegularJob from "../models/RegularJob";
 import {validateJobposter} from "../libs/regularvalidator";
-import { connectToDatabase } from './db';
+import { connectToDatabase } from "../libs/db";
 
 const REGULAR_JOBPOSTER = 2;
 
@@ -10,7 +11,7 @@ export const listMyApplications = handler(async (event, context) => {
   await connectToDatabase();
 
   const identityId = event.requestContext.identity.cognitoIdentityId;
-  
+
   const userFound = await RegularUser.findOne({ identity_id: identityId });
   const applicationFound = await RegularApplication.find({ regular_user: userFound._id });
 
@@ -19,14 +20,14 @@ export const listMyApplications = handler(async (event, context) => {
 
 export const listMyJobApplications = handler(async (event, context) => {
   const jobId = event.pathParameters.idj;
-  
+
   // Validate User First
   const identityId = event.requestContext.identity.cognitoIdentityId;
   await validateJobposter(identityId);
 
   const foundUser = await RegularUser.findOne({ identity_id: identityId});
   const foundJob = await RegularJob.findById(jobId);
-  
+
   let foundRegularApplication;
 
   if ((!foundUser) || (!foundJob)) {
@@ -42,11 +43,11 @@ export const listMyJobApplications = handler(async (event, context) => {
 
 export const getApplication = handler(async (event, context) => {
   await connectToDatabase();
-  
+
   // Either user or jobposter
   // IF JOBPOSTER: Change application status to 'reviewed'
   const applicationId = event.pathParameters.ida;
-  
+
   const identityId = event.requestContext.identity.cognitoIdentityId;
 
   const foundRegularApplication = await RegularApplication.findById(applicationId)
@@ -57,7 +58,7 @@ export const getApplication = handler(async (event, context) => {
     throw new Error("Application or job not found");
   } else if (foundUser.subscription_plan == REGULAR_JOBPOSTER) {
     if (foundRegularApplication.regular_job.owner != foundUser._id) {
-      throw new Error("Unauthorized action by jobposter")
+      throw new Error("Unauthorized action by jobposter");
     } else if (foundRegularApplication.status == 'sent') {
       foundRegularApplication.status = 'reviewed';
       foundRegularApplication.save();
@@ -77,20 +78,20 @@ export const acceptApplication = handler(async (event, context) => {
   await validateJobposter(identityId);
 
   const foundUser = await RegularUser.findOne({ identity_id: identityId});
-  const foundRegularApplication = await RegularApplication.findById(applicationId)
-    .populate('regular_job');
-  
-  if ((!foundUser) || (!foundJob)) {
-    throw new Error("User or job not found");
-  } else if (foundRegularApplication.regular_job.owner == foundUser._id) {
-    foundRegularApplication.num_of_openings -= 1;
+  const foundRegularApplication = await RegularApplication.findById(applicationId);
+  const foundJob = await RegularJob.findById(foundRegularApplication.regular_job);
+
+  if ((!foundUser) || (!foundRegularApplication)) {
+    throw new Error("(Requesting user) or (application) not found");
+  } else if (foundJob.owner == foundUser._id) {
+    foundJob.num_of_openings -= 1;
     foundRegularApplication.status = 'accepted';
+
     await foundRegularApplication.save();
+    await foundJob.save();
   } else {
     throw new Error("Unauthorized update action");
   }
-
-  await foundJob.save();
 
   return { message: "OK" };
 });
@@ -105,17 +106,15 @@ export const rejectApplication = handler(async (event, context) => {
   const foundUser = await RegularUser.findOne({ identity_id: identityId});
   const foundRegularApplication = await RegularApplication.findById(applicationId)
     .populate('regular_job');
-  
-  if ((!foundUser) || (!foundJob)) {
-    throw new Error("User or job not found");
+
+  if ((!foundUser) || (!foundRegularApplication)) {
+    throw new Error("(Requesting user) or (application) not found");
   } else if (foundRegularApplication.regular_job.owner == foundUser._id) {
     foundRegularApplication.status = 'rejected';
     await foundRegularApplication.save();
   } else {
     throw new Error("Unauthorized update action");
   }
-
-  await foundJob.save();
 
   return { message: "OK" };
 });

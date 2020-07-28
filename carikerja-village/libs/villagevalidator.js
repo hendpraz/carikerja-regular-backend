@@ -1,7 +1,7 @@
 import { connectToDatabase } from './db';
 import VillageActivity from '../models/VillageActivity';
 import VillageUser from '../models/VillageUser';
-import VillagePlan from '../models/VillagePlan';
+import Village from '../models/Village';
 
 // Village Subscription Plan
 const VILLAGE_ADMIN = 4;
@@ -37,7 +37,7 @@ export const validateAdmin = async (identityId, village, activity_description) =
     newVillageActivity.village_user = foundUser._id;
     newVillageActivity.village = foundUser.village;
     newVillageActivity.activity_description = activity_description;
-  
+
     await VillageActivity.create(newVillageActivity);
   }
 };

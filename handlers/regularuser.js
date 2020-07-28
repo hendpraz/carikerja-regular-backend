@@ -29,9 +29,9 @@ export const createRegularUser = handler(async (event, context) => {
     newUser.address = data.address;
     newUser.status = 'active';
     newUser.subscription_plan = REGULAR_USER;
-  
+
     newUser.identity_id = identityId;
-  
+
     await RegularUser.create(newUser);
   }
 
@@ -60,7 +60,7 @@ export const updateMyProfile = handler(async (event, context) => {
   await connectToDatabase();
 
   const identityId = event.requestContext.identity.cognitoIdentityId;
-  
+
   const foundUser = await RegularUser.findOne(
     { identity_id: identityId }
   );

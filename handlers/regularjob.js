@@ -45,10 +45,10 @@ export const getRegularJob = handler(async (event, context) => {
 
 export const listMyJob = handler(async (event, context) => {
   await connectToDatabase();
-  
+
   const identityId = event.requestContext.identity.cognitoIdentityId;
   const foundUser = await RegularUser.findOne({ identity_id: identityId });
-  
+
   const foundJob = await RegularJob.find({owner: foundUser._id});
 
   if (!foundJob) {
@@ -60,7 +60,7 @@ export const listMyJob = handler(async (event, context) => {
 
 export const updateRegularJobDetail = handler(async (event, context) => {
   const jobId = event.pathParameters.idj;
-  
+
   console.log(event.body);
   const data = JSON.parse(event.body);
 
@@ -70,7 +70,7 @@ export const updateRegularJobDetail = handler(async (event, context) => {
 
   const foundUser = await RegularUser.findOne({ identity_id: identityId});
   const foundJob = await RegularJob.findById(jobId);
-  
+
   if ((!foundUser) || (!foundJob)) {
     throw new Error("User or job not found");
   } else if (foundJob.owner == foundUser._id) {
@@ -90,7 +90,7 @@ export const updateRegularJobDetail = handler(async (event, context) => {
 
 export const updateRegularJobStatus = handler(async (event, context) => {
   const jobId = event.pathParameters.idj;
-  
+
   console.log(event.body);
   const data = JSON.parse(event.body);
 
@@ -100,7 +100,7 @@ export const updateRegularJobStatus = handler(async (event, context) => {
 
   const foundUser = await RegularUser.findOne({ identity_id: identityId});
   const foundJob = await RegularJob.findById(jobId);
-  
+
   if ((!foundUser) || (!foundJob)) {
     throw new Error("User or job not found");
   } else if (foundJob.owner == foundUser._id) {
