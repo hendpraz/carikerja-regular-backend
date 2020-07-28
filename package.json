@@ -1,0 +1,25 @@
+{
+  "name": "serverless-line-chatbot",
+  "version": "1.1.0",
+  "description": "serverliss API for LINE Chatbot integrated with dialogflow",
+  "main": "jobfinding.js",
+  "scripts": {
+    "test": "serverless-bundle test"
+  },
+  "author": "Muhammad Hendry Prasetya",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hendpraz/serverless-line-chatbot"
+  },
+  "devDependencies": {
+    "aws-sdk": "^2.668.0",
+    "serverless-bundle": "^1.2.5",
+    "serverless-dotenv-plugin": "^2.1.1",
+    "serverless-offline": "^5.3.3"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "mongoose": "^5.9.19",
+    "save": "^2.4.0"
+  }
+}
