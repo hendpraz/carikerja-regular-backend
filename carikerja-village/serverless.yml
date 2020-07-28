@@ -30,24 +30,28 @@ functions:
       - http:
           path: villages
           method: post
+          cors: true
   getvillageprofile:
     handler: handlers/village.getVillageProfile
     events:
       - http:
           path: villages/profile/{idv}
           method: get
+          cors: true
   updatevillageprofile:
     handler: handlers/village.updateVillageProfile
     events:
       - http:
           path: villages/profile/{idv}
           method: patch
+          cors: true
   listvillageactivity:
     handler: handlers/village.listVillageActivity
     events:
       - http:
           path: villages/activities/{idv}
           method: get
+          cors: true
   #### villagejob.js
   createvillagejob:
     handler: handlers/villagejob.createVillageJob
@@ -55,36 +59,42 @@ functions:
       - http:
           path: village-jobs
           method: post
+          cors: true
   listvillagejob:
     handler: handlers/villagejob.listVillageJob
     events:
       - http:
           path: village-jobs/{idv}
           method: get
+          cors: true
   getvillagejob:
     handler: handlers/villagejob.getVillageJob
     events:
       - http:
           path: village-jobs/{idv}/{idj}
           method: get
+          cors: true
   updatevillagejobdetail:
     handler: handlers/villagejob.updateVillageJobDetail
     events:
       - http:
           path: village-job-detail/{idv}/{idj}
           method: patch
+          cors: true
   updatevillagejobstatus:
     handler: handlers/villagejob.updateVillageJobStatus
     events:
       - http:
           path: village-job-status/{idv}/{idj}
           method: patch
+          cors: true
   completevillagejob:
     handler: handlers/villagejob.completeVillageJob
     events:
       - http:
           path: village-job-complete/{idv}/{idj}
           method: post
+          cors: true
   #### villageplan.js
   renewvillagesubscription:
     handler: handlers/villageplan.renewVillageSubscription
@@ -92,24 +102,28 @@ functions:
       - http:
           path: village-plan/renew/{idvp}
           method: patch
+          cors: true
   updatevillagesubscription:
     handler: handlers/villageplan.updateVillageSubscription
     events:
       - http:
           path: village-plan/update/{idvp}
           method: patch
+          cors: true
   stopvillagesubscription:
     handler: handlers/villageplan.stopVillageSubscription
     events:
       - http:
           path: village-plan/stop/{idvp}
           method: patch
+          cors: true
   reactivatevillagesubscription:
     handler: handlers/villageplan.reactivateVillageSubscription
     events:
       - http:
           path: village-plan/reactivate/{idvp}
           method: patch
+          cors: true
   #### villageuser.js (admin part)
   listvillageadmin:
     handler: handlers/villageuser.listVillageAdmin
@@ -117,30 +131,35 @@ functions:
       - http:
           path: village-admins/{idv}
           method: get
+          cors: true
   getvillageadmin:
     handler: handlers/villageuser.getVillageAdmin
     events:
       - http:
           path: village-admins/{idv}/{idu}
           method: get
+          cors: true
   updatevillageadmin:
     handler: handlers/villageuser.updateVillageAdmin
     events:
       - http:
           path: village-admins/update/{idv}/{idu}
           method: patch
+          cors: true
   createvillageadmin:
     handler: handlers/villageuser.createVillageAdmin
     events:
       - http:
           path: village-admins/create/{idu}
           method: patch
+          cors: true
   revokevillageadmin:
     handler: handlers/villageuser.revokeVillageAdmin
     events:
       - http:
           path: village-admins/revoke/{idu}
           method: patch
+          cors: true
   #### villageuser.js (user part)
   createvillageuser:
     handler: handlers/villageuser.createVillageUser
@@ -148,30 +167,35 @@ functions:
       - http:
           path: village-users
           method: post
+          cors: true
   listvillageuser:
     handler: handlers/villageuser.listVillageUser
     events:
       - http:
           path: village-users/{idv}
           method: get
+          cors: true
   getvillageuser:
     handler: handlers/villageuser.getVillageUser
     events:
       - http:
           path: village-users/{idv}/{idu}
           method: get
+          cors: true
   updatevillageuser:
     handler: handlers/villageuser.updateVillageUser
     events:
       - http:
           path: village-users/{idv}/{idu}
           method: patch
+          cors: true
   deletevillageuser:
     handler: handlers/villageuser.deleteVillageUser
     events:
       - http:
           path: village-users/{idv}/{idu}
           method: delete
+          cors: true
 
 # Create our resources with separate CloudFormation templates
 resources:

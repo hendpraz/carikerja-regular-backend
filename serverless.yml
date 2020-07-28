@@ -36,6 +36,7 @@ functions:
       - http:
           path: job-search
           method: get
+          cors: true
   #### regularapplication.js
   listmyapplications:
     handler: handlers/regularapplication.listMyApplications
@@ -43,30 +44,35 @@ functions:
       - http:
           path: my-applications
           method: get
+          cors: true
   listmyjobapplications:
     handler: handlers/regularapplication.listMyJobApplications
     events:
       - http:
           path: my-jobs/applications/{idj}
           method: get
+          cors: true
   getapplication:
     handler: handlers/regularapplication.getApplication
     events:
       - http:
           path: applications/{ida}
           method: get
+          cors: true
   acceptapplication:
     handler: handlers/regularapplication.acceptApplication
     events:
       - http:
           path: accept-application/{ida}
           method: patch
+          cors: true
   rejectapplication:
     handler: handlers/regularapplication.rejectApplication
     events:
       - http:
           path: reject-application/{ida}
           method: patch
+          cors: true
   #### regularjob.js
   createregularjob:
     handler: handlers/regularjob.createRegularJob
@@ -74,30 +80,35 @@ functions:
       - http:
           path: jobs/create
           method: post
+          cors: true
   getregularjob:
     handler: handlers/regularjob.getRegularJob
     events:
       - http:
           path: jobs/{idj}
           method: get
+          cors: true
   listmyjob:
     handler: handlers/regularjob.listMyJob
     events:
       - http:
           path: my-jobs
           method: get
+          cors: true
   updateregularjobdetail:
     handler: handlers/regularjob.updateRegularJobDetail
     events:
       - http:
           path: update-job-detail/{idj}
           method: patch
+          cors: true
   updateregularjobstatus:
     handler: handlers/regularjob.updateRegularJobStatus
     events:
       - http:
           path: update-job-status/{idj}
           method: patch
+          cors: true
   #### regularplan.js
   createregularjobposter:
     handler: handlers/regularplan.createRegularJobposter
@@ -105,12 +116,14 @@ functions:
       - http:
           path: create-jobposter/{idu}
           method: patch
+          cors: true
   revokejobposter:
     handler: handlers/regularplan.revokeJobposter
     events:
       - http:
           path: revoke-jobposter/{idu}
           method: patch
+          cors: true
   #### regularuser.js
   createregularuser:
     handler: handlers/regularuser.createRegularUser
@@ -118,30 +131,35 @@ functions:
       - http:
           path: regular-users
           method: post
+          cors: true
   getmyprofile:
     handler: handlers/regularuser.getMyProfile
     events:
       - http:
           path: regular-users/me
           method: get
+          cors: true
   getuserprofile:
     handler: handlers/regularuser.getUserProfile
     events:
       - http:
           path: regular-users/{idu}
           method: get
+          cors: true
   updatemyprofile:
     handler: handlers/regularuser.updateMyProfile
     events:
       - http:
           path: update-my-profile
           method: patch
+          cors: true
   deactivateregularuser:
     handler: handlers/regularuser.deactivateRegularUser
     events:
       - http:
           path: deactivate-regular-user/{idu}
           method: patch
+          cors: true
 
 # Create our resources with separate CloudFormation templates
 resources:
