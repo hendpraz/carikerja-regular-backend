@@ -43,30 +43,25 @@ export const getMyProfile = handler(async (event, context) => {
 });
 
 export const getUserProfile = handler(async (event, context) => {
-  const userIdentityId = event.pathParameters.uid;
-  const foundUser = RegularUser.findOne({ identity_id: userIdentityId});
+  const userId = event.pathParameters.idu;
+  const foundUser = RegularUser.findById(userId);
 
   return { message: "OK", foundUser: foundUser };
 });
 
-export const updateRegularUser = handler(async (event, context) => {
-  // Validate User First
-  const userIdentityId = event.pathParameters.uid;
+export const updateMyProfile = handler(async (event, context) => {
   const identityId = event.requestContext.identity.cognitoIdentityId;
-  if (identityId != userIdentityId) {
-    throw new Error("Unauthorized update action by user");
-  }
-
-  console.log(event.body);
-  const data = JSON.parse(event.body);
-
+  
   const foundUser = await RegularUser.findOne(
-    { identity_id: userIdentityId }
+    { identity_id: identityId }
   );
 
   if (!foundUser) {
     throw new Error("User not found");
   }
+
+  console.log(event.body);
+  const data = JSON.parse(event.body);
 
   foundUser.name = data.name;
   foundUser.phone_number = data.phone_number;
@@ -81,10 +76,10 @@ export const deactivateRegularUser = handler(async (event, context) => {
   const identityId = event.requestContext.identity.cognitoIdentityId;
   await validateSuperuser(identityId);
 
-  const userIdentityId = event.pathParameters.uid;
+  const userId = event.pathParameters.idu;
 
   const foundUser = await RegularUser.findOne(
-    { identity_id: userIdentityId, subscription_plan: REGULAR_USER}
+    { _id: userId, subscription_plan: REGULAR_USER}
   );
 
   if (!foundUser) {

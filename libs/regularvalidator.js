@@ -2,7 +2,7 @@ import { connectToDatabase } from './db';
 import RegularUser from '../models/RegularUser';
 import RegularPlan from '../models/RegularPlan';
 
-// Village Subscription Plan
+// Regular Subscription Plan
 const REGULAR_JOBPOSTER = 2;
 const REGULAR_SUPERUSER = 8;
 

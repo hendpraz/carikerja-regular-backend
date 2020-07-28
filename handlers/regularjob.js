@@ -1,6 +1,6 @@
 import handler from "../libs/handler-lib";
 import RegularJob from "../models/RegularJob";
-import { validateJobposter } from "../libs/villagevalidator";
+import { validateJobposter } from "../libs/regularvalidator";
 import RegularUser from "../models/RegularUser";
 
 export const createRegularJob = handler(async (event, context) => {
@@ -38,6 +38,19 @@ export const getRegularJob = handler(async (event, context) => {
   }
 
   return { message: "OK", job: foundJob };
+});
+
+export const listMyJob = handler(async (event, context) => {
+  const identityId = event.requestContext.identity.cognitoIdentityId;
+  const foundUser = RegularUser.findOne({ identity_id: identityId });
+  
+  const foundJob = await RegularJob.find({owner: foundUser._id});
+
+  if (!foundJob) {
+    throw new Error("Job not found");
+  }
+
+  return { message: "OK", jobs: foundJob };
 });
 
 export const updateRegularJobDetail = handler(async (event, context) => {

@@ -36,6 +36,112 @@ functions:
       - http:
           path: job-search
           method: get
+  #### regularapplication.js
+  listmyapplications:
+    handler: handlers/regularapplication.listMyApplications
+    events:
+      - http:
+          path: my-applications
+          method: get
+  listmyjobapplications:
+    handler: handlers/regularapplication.listMyJobApplications
+    events:
+      - http:
+          path: my-jobs/applications/{idj}
+          method: get
+  getapplication:
+    handler: handlers/regularapplication.getApplication
+    events:
+      - http:
+          path: applications/{ida}
+          method: get
+  acceptapplication:
+    handler: handlers/regularapplication.acceptApplication
+    events:
+      - http:
+          path: accept-application/{ida}
+          method: patch
+  rejectapplication:
+    handler: handlers/regularapplication.rejectApplication
+    events:
+      - http:
+          path: reject-application/{ida}
+          method: patch
+  #### regularjob.js
+  createregularjob:
+    handler: handlers/regularjob.createRegularJob
+    events:
+      - http:
+          path: jobs/create
+          method: post
+  getregularjob:
+    handler: handlers/regularjob.getRegularJob
+    events:
+      - http:
+          path: jobs/{idj}
+          method: get
+  listmyjob:
+    handler: handlers/regularjob.listMyJob
+    events:
+      - http:
+          path: my-jobs
+          method: get
+  updateregularjobdetail:
+    handler: handlers/regularjob.updateRegularJobDetail
+    events:
+      - http:
+          path: update-job-detail/{idj}
+          method: patch
+  updateregularjobstatus:
+    handler: handlers/regularjob.updateRegularJobStatus
+    events:
+      - http:
+          path: update-job-status/{idj}
+          method: patch
+  #### regularplan.js
+  createregularjobposter:
+    handler: handlers/regularplan.createRegularJobposter
+    events:
+      - http:
+          path: create-jobposter/{idu}
+          method: patch
+  revokejobposter:
+    handler: handlers/regularplan.revokeJobposter
+    events:
+      - http:
+          path: revoke-jobposter/{idu}
+          method: patch
+  #### regularuser.js
+  createregularuser:
+    handler: handlers/regularuser.createRegularUser
+    events:
+      - http:
+          path: regular-users
+          method: post
+  getmyprofile:
+    handler: handlers/regularuser.getMyProfile
+    events:
+      - http:
+          path: regular-users/me
+          method: get
+  getuserprofile:
+    handler: handlers/regularuser.getUserProfile
+    events:
+      - http:
+          path: regular-users/{idu}
+          method: get
+  updatemyprofile:
+    handler: handlers/regularuser.updateMyProfile
+    events:
+      - http:
+          path: update-my-profile
+          method: patch
+  deactivateregularuser:
+    handler: handlers/regularuser.deactivateRegularUser
+    events:
+      - http:
+          path: deactivate-regular-user/{idu}
+          method: patch
   #### village.js
   createvillage:
     handler: handlers/village.createVillage

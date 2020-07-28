@@ -66,9 +66,6 @@ export const getApplication = handler(async (event, context) => {
 
 export const acceptApplication = handler(async (event, context) => {
   const applicationId = event.pathParameters.ida;
-  
-  console.log(event.body);
-  const data = JSON.parse(event.body);
 
   // Validate User First
   const identityId = event.requestContext.identity.cognitoIdentityId;
@@ -95,9 +92,6 @@ export const acceptApplication = handler(async (event, context) => {
 
 export const rejectApplication = handler(async (event, context) => {
   const applicationId = event.pathParameters.ida;
-  
-  console.log(event.body);
-  const data = JSON.parse(event.body);
 
   // Validate User First
   const identityId = event.requestContext.identity.cognitoIdentityId;

@@ -11,10 +11,11 @@ export const createRegularJobposter = handler(async (event, context) => {
   const identityId = event.requestContext.identity.cognitoIdentityId;
   await validateSuperuser(identityId);
 
-  const userIdentityId = event.pathParameters.uid;
+  // TODO: Automate jobposter subs with payment gateway
+  const userId = event.pathParameters.idu;
 
   const foundUser = await RegularUser.findOne(
-    { identity_id: userIdentityId, subscription_plan: REGULAR_USER }
+    { _id: userId, subscription_plan: REGULAR_USER }
   );
 
   if (!foundUser) {
@@ -43,10 +44,10 @@ export const revokeJobposter = handler(async (event, context) => {
   const identityId = event.requestContext.identity.cognitoIdentityId;
   await validateSuperuser(identityId);
 
-  const userIdentityId = event.pathParameters.uid;
+  const userId = event.pathParameters.idu;
 
   const foundUser = await RegularUser.findOne(
-    { identity_id: userIdentityId, subscription_plan: REGULAR_USER}
+    { _id: userId, subscription_plan: REGULAR_USER}
   );
 
   if (!foundUser) {

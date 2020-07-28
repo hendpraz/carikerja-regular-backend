@@ -231,7 +231,5 @@ export const deleteVillageUser = handler(async (event, context) => {
     { _id: userId, village: villageId }
   );
 
-  // TODO: Delete Cognito User
-
   return { message: "OK" };
 });
