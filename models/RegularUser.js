@@ -18,12 +18,12 @@ const SubscriptionPlan = require('./SubscriptionPlan');
 const Id = Schema.Types.ObjectId;
 const documentSchema = new Schema(
   {
-    name: { type: String, required: true },
+    name: { type: String },
     email: { type: String, required: true, unique: true },
-    phone_number: { type: String, required: true, unique: true },
-    whatsapp_number: { type: String, required: true },
-    profile_picture: { type: String, required: true },
-    address: { type: String, required: true },
+    phone_number: { type: String, unique: true },
+    whatsapp_number: { type: String },
+    profile_picture: { type: String },
+    address: { type: String },
     status: { type: String, required: true },
     subscription_plan: { type: Id, required: true, ref: 'SubscriptionPlan' },
     plan_expiry_date : Date,
