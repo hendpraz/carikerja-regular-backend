@@ -42,7 +42,7 @@ export const getRegularJob = handler(async (event, context) => {
 
 export const listMyJob = handler(async (event, context) => {
   const identityId = event.requestContext.identity.cognitoIdentityId;
-  const foundUser = RegularUser.findOne({ identity_id: identityId });
+  const foundUser = await RegularUser.findOne({ identity_id: identityId });
   
   const foundJob = await RegularJob.find({owner: foundUser._id});
 

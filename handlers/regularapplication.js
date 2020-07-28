@@ -21,8 +21,8 @@ export const listMyJobApplications = handler(async (event, context) => {
   const identityId = event.requestContext.identity.cognitoIdentityId;
   await validateJobposter(identityId);
 
-  const foundUser = RegularUser.findOne({ identity_id: identityId});
-  const foundJob = RegularJob.findById(jobId);
+  const foundUser = await RegularUser.findOne({ identity_id: identityId});
+  const foundJob = await RegularJob.findById(jobId);
   
   let foundRegularApplication;
 

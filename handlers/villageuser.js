@@ -89,7 +89,7 @@ export const createVillageAdmin = handler(async (event, context) => {
   const identityId = event.requestContext.identity.cognitoIdentityId;
   await validateSuperuser(identityId);
 
-  const foundUser = VillageUser.findById(userId);
+  const foundUser = await VillageUser.findById(userId);
 
   if (foundUser) {
     if (foundUser.village == data.village) {

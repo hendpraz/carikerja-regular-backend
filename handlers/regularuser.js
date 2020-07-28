@@ -12,7 +12,7 @@ export const createRegularUser = handler(async (event, context) => {
   // Validate User First
   const identityId = event.requestContext.identity.cognitoIdentityId;
 
-  const foundUser = RegularUser.findOne({ identity_id: identityId });
+  const foundUser = await RegularUser.findOne({ identity_id: identityId });
   if ( foundUser ) {
     throw new Error("User already signed up");
   } else {
@@ -37,14 +37,14 @@ export const createRegularUser = handler(async (event, context) => {
 
 export const getMyProfile = handler(async (event, context) => {
   const identityId = event.requestContext.identity.cognitoIdentityId;
-  const foundUser = RegularUser.findOne({ identity_id: identityId });
+  const foundUser = await RegularUser.findOne({ identity_id: identityId });
 
   return { message: "OK", foundUser: foundUser };
 });
 
 export const getUserProfile = handler(async (event, context) => {
   const userId = event.pathParameters.idu;
-  const foundUser = RegularUser.findById(userId);
+  const foundUser = await RegularUser.findById(userId);
 
   return { message: "OK", foundUser: foundUser };
 });
