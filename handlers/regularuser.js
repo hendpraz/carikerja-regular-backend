@@ -2,10 +2,13 @@ import handler from "../libs/handler-lib";
 import RegularUser from "../models/RegularUser";
 import RegularPlan from "../models/RegularPlan";
 import { validateSuperuser } from "../libs/regularvalidator";
+import { connectToDatabase } from "../libs/db";
 
 const REGULAR_USER = 1;
 
 export const createRegularUser = handler(async (event, context) => {
+  await connectToDatabase();
+
   console.log(event.body);
   const data = JSON.parse(event.body);
 
@@ -36,6 +39,8 @@ export const createRegularUser = handler(async (event, context) => {
 });
 
 export const getMyProfile = handler(async (event, context) => {
+  await connectToDatabase();
+
   const identityId = event.requestContext.identity.cognitoIdentityId;
   const foundUser = await RegularUser.findOne({ identity_id: identityId });
 
@@ -43,6 +48,8 @@ export const getMyProfile = handler(async (event, context) => {
 });
 
 export const getUserProfile = handler(async (event, context) => {
+  await connectToDatabase();
+
   const userId = event.pathParameters.idu;
   const foundUser = await RegularUser.findById(userId);
 
@@ -50,6 +57,8 @@ export const getUserProfile = handler(async (event, context) => {
 });
 
 export const updateMyProfile = handler(async (event, context) => {
+  await connectToDatabase();
+
   const identityId = event.requestContext.identity.cognitoIdentityId;
   
   const foundUser = await RegularUser.findOne(

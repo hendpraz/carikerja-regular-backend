@@ -2,10 +2,13 @@ import handler from "../libs/handler-lib";
 import RegularUser from "../models/RegularUser";
 import RegularApplication from "../models/RegularApplication";
 import {validateJobposter} from "../libs/regularvalidator";
+import { connectToDatabase } from './db';
 
 const REGULAR_JOBPOSTER = 2;
 
 export const listMyApplications = handler(async (event, context) => {
+  await connectToDatabase();
+
   const identityId = event.requestContext.identity.cognitoIdentityId;
   
   const userFound = await RegularUser.findOne({ identity_id: identityId });
@@ -38,6 +41,8 @@ export const listMyJobApplications = handler(async (event, context) => {
 });
 
 export const getApplication = handler(async (event, context) => {
+  await connectToDatabase();
+  
   // Either user or jobposter
   // IF JOBPOSTER: Change application status to 'reviewed'
   const applicationId = event.pathParameters.ida;

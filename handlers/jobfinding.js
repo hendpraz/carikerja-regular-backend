@@ -117,6 +117,5 @@ export const findjobsweb = handler(async (event, context) => {
     .skip((page - 1) * limit);
 
   console.log(foundJobs);
-  
   return { message: "OK", jobs: foundJobs };
 });

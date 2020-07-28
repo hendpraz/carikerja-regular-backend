@@ -22,7 +22,7 @@ export const validateJobposter = async (identityId) => {
   }
 
   const foundRegularPlan = await RegularPlan.findOne({regular_user: foundUser._id});
-  
+
   // Check if inactive
   if (foundRegularPlan.status == 'inactive') {
     throw new Error("Auth error: the requesting user's plan is inactive");

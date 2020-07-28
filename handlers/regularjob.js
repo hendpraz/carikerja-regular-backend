@@ -2,6 +2,7 @@ import handler from "../libs/handler-lib";
 import RegularJob from "../models/RegularJob";
 import { validateJobposter } from "../libs/regularvalidator";
 import RegularUser from "../models/RegularUser";
+import { connectToDatabase } from "../libs/db";
 
 export const createRegularJob = handler(async (event, context) => {
   console.log(event.body);
@@ -29,6 +30,8 @@ export const createRegularJob = handler(async (event, context) => {
 });
 
 export const getRegularJob = handler(async (event, context) => {
+  await connectToDatabase();
+
   const jobId = event.pathParameters.idj;
 
   const foundJob = await RegularJob.findById(jobId);
@@ -41,6 +44,8 @@ export const getRegularJob = handler(async (event, context) => {
 });
 
 export const listMyJob = handler(async (event, context) => {
+  await connectToDatabase();
+  
   const identityId = event.requestContext.identity.cognitoIdentityId;
   const foundUser = await RegularUser.findOne({ identity_id: identityId });
   
