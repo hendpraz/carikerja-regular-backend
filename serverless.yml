@@ -92,7 +92,7 @@ functions:
     handler: handlers/regularjob.applyRegularJob
     events:
       - http:
-          path: jobs/apply
+          path: jobs/apply/{idj}
           method: post
           cors: true
           authorizer: aws_iam

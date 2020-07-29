@@ -48,7 +48,7 @@ export const getVillageProfile = handler(async (event, context) => {
     throw new Error("Village not found");
   }
 
-  return { message: "OK", village: foundVillage };
+  return foundVillage;
 });
 
 export const updateVillageProfile = handler(async (event, context) => {
@@ -90,5 +90,5 @@ export const listVillageActivity = handler(async (event, context) => {
     throw new Error("Village Activity not found");
   }
 
-  return { message: "OK", village_activities: foundVillageActivities };
+  return foundVillageActivities;
 });
