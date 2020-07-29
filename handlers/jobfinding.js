@@ -10,7 +10,7 @@ const getLastPage = (session, q) => {
 
 export const findjobsbot = async (event, context) => {
   try {
-    console.log(event.body);
+    console.log(event);
     const data = JSON.parse(event.body);
 
     await connectToDatabase();
@@ -81,26 +81,24 @@ export const findjobsbot = async (event, context) => {
 
 /* FOR WEB APP */
 export const findjobsweb = handler(async (event, context) => {
-  console.log(event.body);
-  const data = JSON.parse(event.body);
-
+  console.log(event);
   await connectToDatabase();
 
-  const location = data.queryStringParameters.location;
-  const profession = data.queryStringParameters.profession;
+  const location = event.queryStringParameters.location;
+  const profession = event.queryStringParameters.profession;
 
   // Build query
   let q = event.queryStringParameters.q;
-  q = `${q} ${profession} ${location}`;
   let page = event.queryStringParameters.page;
   parseInt(page, 10) > 0 ? parseInt(page, 10) : 1;
 
   const limit = 10;
   let searchQuery;
 
-  if (q === '*') {
+  if (q === "*") {
     searchQuery = {};
   } else {
+    q = `${q} ${profession || ''} ${location || ''}`;
     searchQuery = {
       $text: {
         $search: q
@@ -111,12 +109,12 @@ export const findjobsweb = handler(async (event, context) => {
     };
   }
 
+  console.log(searchQuery);
   const foundJobs = await RegularJob.find(searchQuery)
     .populate('owner')
     .limit(limit)
     .skip((page - 1) * limit);
 
   console.log(foundJobs);
-  
-  return { message: "OK", jobs: foundJobs };
+  return foundJobs;
 });

@@ -39,7 +39,7 @@ export const stopVillageSubscription = handler(async (event, context) => {
   const foundVillagePlan = await Village.findOne({ village: villageId });
 
   foundVillagePlan.status = 'inactive';
-  await villagePlan.save();
+  await foundVillagePlan.save();
 
   return { message: "OK" };
 });
@@ -52,7 +52,7 @@ export const reactivateVillageSubscription = handler(async (event, context) => {
   const foundVillagePlan = await Village.findOne({ village: villageId });
 
   foundVillagePlan.status = 'active';
-  await villagePlan.save();
+  await foundVillagePlan.save();
 
   return { message: "OK" };
 });

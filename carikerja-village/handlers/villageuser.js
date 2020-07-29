@@ -1,7 +1,7 @@
 import handler from "../libs/handler-lib";
 import VillageUser from '../models/VillageUser';
 import { validateAdmin } from "../libs/villagevalidator";
-import { validateSuperuser } from "../libs/regularvalidator";
+import { validateSuperuser } from "../libs/villagevalidator";
 
 // Village Subscription Plan Number
 const VILLAGE_USER = 3;
@@ -24,7 +24,7 @@ export const listVillageAdmin = handler(async (event, context) => {
     { subscription_plan: VILLAGE_ADMIN, village: villageId }
   );
 
-  return { message: "OK", admin_list: foundAdmins };
+  return foundAdmins;
 });
 
 export const getVillageAdmin = handler(async (event, context) => {
@@ -43,7 +43,7 @@ export const getVillageAdmin = handler(async (event, context) => {
     throw new Error("Admin not found");
   }
 
-  return { message: "OK", admin: foundUser };
+  return foundUser;
 });
 
 export const updateVillageAdmin = handler(async (event, context) => {
@@ -89,10 +89,10 @@ export const createVillageAdmin = handler(async (event, context) => {
   const identityId = event.requestContext.identity.cognitoIdentityId;
   await validateSuperuser(identityId);
 
-  const foundUser = VillageUser.findById(userId);
+  const foundUser = await VillageUser.findById(userId);
 
   if (foundUser) {
-    if (foundUser.village == data.village) {
+    if (String(foundUser.village) == String(data.village)) {
       foundUser.subscription_plan = VILLAGE_ADMIN;
       foundUser.identity_id = data.identity_id;
       await foundUser.save();
@@ -114,7 +114,7 @@ export const revokeVillageAdmin = handler(async (event, context) => {
   await validateSuperuser(identityId);
 
   const foundUser = await VillageUser.findOne(
-    { _id: userId, subscription_plan: VILLAGE_ADMIN, village: villageId }
+    { _id: userId, subscription_plan: VILLAGE_ADMIN }
   );
 
   if (!foundUser) {
@@ -170,7 +170,7 @@ export const listVillageUser  = handler(async (event, context) => {
     { subscription_plan: VILLAGE_USER, village: villageId }
   );
 
-  return { message: "OK", user_list: foundUsers };
+  return foundUsers;
 });
 
 export const getVillageUser = handler(async (event, context) => {
@@ -189,7 +189,7 @@ export const getVillageUser = handler(async (event, context) => {
     throw new Error("User not found");
   }
 
-  return { message: "OK", user: foundUser };
+  return foundUser;
 });
 
 export const updateVillageUser = handler(async (event, context) => {
@@ -230,8 +230,6 @@ export const deleteVillageUser = handler(async (event, context) => {
   await VillageUser.deleteOne(
     { _id: userId, village: villageId }
   );
-
-  // TODO: Delete Cognito User
 
   return { message: "OK" };
 });

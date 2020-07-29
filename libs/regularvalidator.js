@@ -2,7 +2,7 @@ import { connectToDatabase } from './db';
 import RegularUser from '../models/RegularUser';
 import RegularPlan from '../models/RegularPlan';
 
-// Village Subscription Plan
+// Regular Subscription Plan
 const REGULAR_JOBPOSTER = 2;
 const REGULAR_SUPERUSER = 8;
 
@@ -22,7 +22,7 @@ export const validateJobposter = async (identityId) => {
   }
 
   const foundRegularPlan = await RegularPlan.findOne({regular_user: foundUser._id});
-  
+
   // Check if inactive
   if (foundRegularPlan.status == 'inactive') {
     throw new Error("Auth error: the requesting user's plan is inactive");

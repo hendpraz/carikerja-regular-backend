@@ -7,14 +7,16 @@ const REGULAR_USER = 1;
 const REGULAR_JOBPOSTER = 2;
 
 export const createRegularJobposter = handler(async (event, context) => {
+  console.log(event);
   // Validate User First
   const identityId = event.requestContext.identity.cognitoIdentityId;
   await validateSuperuser(identityId);
 
-  const userIdentityId = event.pathParameters.uid;
+  // TODO: Automate jobposter subs with payment gateway
+  const userId = event.pathParameters.idu;
 
   const foundUser = await RegularUser.findOne(
-    { identity_id: userIdentityId, subscription_plan: REGULAR_USER }
+    { _id: userId, subscription_plan: REGULAR_USER }
   );
 
   if (!foundUser) {
@@ -25,9 +27,9 @@ export const createRegularJobposter = handler(async (event, context) => {
   await foundUser.save();
 
   const foundRegularPlan = await RegularPlan.findOne({regular_user: foundUser._id });
-  
+
   foundRegularPlan.subscription_plan = REGULAR_JOBPOSTER;
-  
+
   let tempDate = Date.now();
   tempDate.setDate(tempDate.getDate() + 30);
 
@@ -39,14 +41,15 @@ export const createRegularJobposter = handler(async (event, context) => {
 });
 
 export const revokeJobposter = handler(async (event, context) => {
+  console.log(event);
   // Validate User First
   const identityId = event.requestContext.identity.cognitoIdentityId;
   await validateSuperuser(identityId);
 
-  const userIdentityId = event.pathParameters.uid;
+  const userId = event.pathParameters.idu;
 
   const foundUser = await RegularUser.findOne(
-    { identity_id: userIdentityId, subscription_plan: REGULAR_USER}
+    { _id: userId, subscription_plan: REGULAR_USER}
   );
 
   if (!foundUser) {
@@ -57,7 +60,7 @@ export const revokeJobposter = handler(async (event, context) => {
   await foundUser.save();
 
   const foundRegularPlan = await RegularPlan.findOne({regular_user: foundUser._id });
-  
+
   foundRegularPlan.subscription_plan = REGULAR_USER;
   foundRegularPlan.status = 'inactive';
   foundRegularPlan.save();

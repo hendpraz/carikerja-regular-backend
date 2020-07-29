@@ -15,7 +15,7 @@ const Id = Schema.Types.ObjectId;
 const documentSchema = new Schema(
   {
     village: { type: Id, required: true, ref: 'Village' },
-    subscription_plan: {type: Id, required: true, ref: 'SubscriptionPlan'},
+    subscription_plan: {type: Number, required: true },
     expiry_date: { type: Date, required: true },
     status: { type: String, required: true }
   },

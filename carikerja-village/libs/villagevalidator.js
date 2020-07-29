@@ -1,7 +1,7 @@
 import { connectToDatabase } from './db';
 import VillageActivity from '../models/VillageActivity';
 import VillageUser from '../models/VillageUser';
-import VillagePlan from '../models/VillagePlan';
+import Village from '../models/Village';
 
 // Village Subscription Plan
 const VILLAGE_ADMIN = 4;
@@ -15,7 +15,7 @@ export const validateAdmin = async (identityId, village, activity_description) =
   });
 
   const foundVillagePlan = await Village.findOne({village: village});
-  if (foundVillagePlan.status === 'inactive') {
+  if (foundVillagePlan.status === "inactive") {
     throw new Error("Inactive village access");
   } else if (foundVillagePlan.expiry_date < Date.now()) {
     throw new Error("Village plan is expired");
@@ -24,7 +24,7 @@ export const validateAdmin = async (identityId, village, activity_description) =
   if (foundUser) {
     if ((foundUser.subscription_plan != VILLAGE_ADMIN)) {
       throw new Error("Auth Error: the requesting user isn't village admin");
-    } else if (foundUser.village != village){
+    } else if (String(foundUser.village) != String(village)){
       throw new Error("Auth Error: unauthorized village access");
     }
   } else {
@@ -37,7 +37,7 @@ export const validateAdmin = async (identityId, village, activity_description) =
     newVillageActivity.village_user = foundUser._id;
     newVillageActivity.village = foundUser.village;
     newVillageActivity.activity_description = activity_description;
-  
+
     await VillageActivity.create(newVillageActivity);
   }
 };

@@ -36,155 +36,164 @@ functions:
       - http:
           path: job-search
           method: get
-  #### village.js
-  createvillage:
-    handler: handlers/village.createVillage
+          cors: true
+          authorizer: aws_iam
+  #### regularapplication.js
+  listmyapplications:
+    handler: handlers/regularapplication.listMyApplications
     events:
       - http:
-          path: villages
+          path: my-applications
+          method: get
+          cors: true
+          authorizer: aws_iam
+  listmyjobapplications:
+    handler: handlers/regularapplication.listMyJobApplications
+    events:
+      - http:
+          path: my-jobs/applications/{idj}
+          method: get
+          cors: true
+          authorizer: aws_iam
+  getapplication:
+    handler: handlers/regularapplication.getApplication
+    events:
+      - http:
+          path: applications/{ida}
+          method: get
+          cors: true
+          authorizer: aws_iam
+  acceptapplication:
+    handler: handlers/regularapplication.acceptApplication
+    events:
+      - http:
+          path: accept-application/{ida}
+          method: patch
+          cors: true
+          authorizer: aws_iam
+  rejectapplication:
+    handler: handlers/regularapplication.rejectApplication
+    events:
+      - http:
+          path: reject-application/{ida}
+          method: patch
+          cors: true
+          authorizer: aws_iam
+  #### regularjob.js
+  getmyapplicationonjob:
+    handler: handlers/regularjob.getMyApplicationOnJob
+    events:
+      - http:
+          path: jobs/my-application/{idj}
+          method: get
+          cors: true
+          authorizer: aws_iam
+  applyregularjob:
+    handler: handlers/regularjob.applyRegularJob
+    events:
+      - http:
+          path: jobs/apply/{idj}
           method: post
-  getvillageprofile:
-    handler: handlers/village.getVillageProfile
+          cors: true
+          authorizer: aws_iam
+  createregularjob:
+    handler: handlers/regularjob.createRegularJob
     events:
       - http:
-          path: villages/profile/{idv}
-          method: get
-  updatevillageprofile:
-    handler: handlers/village.updateVillageProfile
-    events:
-      - http:
-          path: villages/profile/{idv}
-          method: patch
-  listvillageactivity:
-    handler: handlers/village.listVillageActivity
-    events:
-      - http:
-          path: villages/activities/{idv}
-          method: get
-  #### villagejob.js
-  createvillagejob:
-    handler: handlers/villagejob.createVillageJob
-    events:
-      - http:
-          path: village-jobs
+          path: jobs/create
           method: post
-  listvillagejob:
-    handler: handlers/villagejob.listVillageJob
+          cors: true
+          authorizer: aws_iam
+  getregularjob:
+    handler: handlers/regularjob.getRegularJob
     events:
       - http:
-          path: village-jobs/{idv}
+          path: jobs/{idj}
           method: get
-  getvillagejob:
-    handler: handlers/villagejob.getVillageJob
+          cors: true
+          authorizer: aws_iam
+  listmyjob:
+    handler: handlers/regularjob.listMyJob
     events:
       - http:
-          path: village-jobs/{idv}/{idj}
+          path: my-jobs
           method: get
-  updatevillagejobdetail:
-    handler: handlers/villagejob.updateVillageJobDetail
+          cors: true
+          authorizer: aws_iam
+  updateregularjobdetail:
+    handler: handlers/regularjob.updateRegularJobDetail
     events:
       - http:
-          path: village-job-detail/{idv}/{idj}
+          path: update-job-detail/{idj}
           method: patch
-  updatevillagejobstatus:
-    handler: handlers/villagejob.updateVillageJobStatus
+          cors: true
+          authorizer: aws_iam
+  updateregularjobstatus:
+    handler: handlers/regularjob.updateRegularJobStatus
     events:
       - http:
-          path: village-job-status/{idv}/{idj}
+          path: update-job-status/{idj}
           method: patch
-  completevillagejob:
-    handler: handlers/villagejob.completeVillageJob
+          cors: true
+          authorizer: aws_iam
+  #### regularplan.js
+  createregularjobposter:
+    handler: handlers/regularplan.createRegularJobposter
     events:
       - http:
-          path: village-job-complete/{idv}/{idj}
+          path: create-jobposter/{idu}
+          method: patch
+          cors: true
+          authorizer: aws_iam
+  revokejobposter:
+    handler: handlers/regularplan.revokeJobposter
+    events:
+      - http:
+          path: revoke-jobposter/{idu}
+          method: patch
+          cors: true
+          authorizer: aws_iam
+  #### regularuser.js
+  createregularuser:
+    handler: handlers/regularuser.createRegularUser
+    events:
+      - http:
+          path: regular-users
           method: post
-  #### villageplan.js
-  renewvillagesubscription:
-    handler: handlers/villageplan.renewVillageSubscription
+          cors: true
+          authorizer: aws_iam
+  getmyprofile:
+    handler: handlers/regularuser.getMyProfile
     events:
       - http:
-          path: village-plan/renew/{idvp}
-          method: patch
-  updatevillagesubscription:
-    handler: handlers/villageplan.updateVillageSubscription
-    events:
-      - http:
-          path: village-plan/update/{idvp}
-          method: patch
-  stopvillagesubscription:
-    handler: handlers/villageplan.stopVillageSubscription
-    events:
-      - http:
-          path: village-plan/stop/{idvp}
-          method: patch
-  reactivatevillagesubscription:
-    handler: handlers/villageplan.reactivateVillageSubscription
-    events:
-      - http:
-          path: village-plan/reactivate/{idvp}
-          method: patch
-  #### villageuser.js (admin part)
-  listvillageadmin:
-    handler: handlers/villageuser.listVillageAdmin
-    events:
-      - http:
-          path: village-admins/{idv}
+          path: regular-users/me
           method: get
-  getvillageadmin:
-    handler: handlers/villageuser.getVillageAdmin
+          cors: true
+          authorizer: aws_iam
+  getuserprofile:
+    handler: handlers/regularuser.getUserProfile
     events:
       - http:
-          path: village-admins/{idv}/{idu}
+          path: regular-users/{idu}
           method: get
-  updatevillageadmin:
-    handler: handlers/villageuser.updateVillageAdmin
+          cors: true
+          authorizer: aws_iam
+  updatemyprofile:
+    handler: handlers/regularuser.updateMyProfile
     events:
       - http:
-          path: village-admins/update/{idv}/{idu}
+          path: update-my-profile
           method: patch
-  createvillageadmin:
-    handler: handlers/villageuser.createVillageAdmin
+          cors: true
+          authorizer: aws_iam
+  deactivateregularuser:
+    handler: handlers/regularuser.deactivateRegularUser
     events:
       - http:
-          path: village-admins/create/{idu}
+          path: deactivate-regular-user/{idu}
           method: patch
-  revokevillageadmin:
-    handler: handlers/villageuser.revokeVillageAdmin
-    events:
-      - http:
-          path: village-admins/revoke/{idu}
-          method: patch
-  #### villageuser.js (user part)
-  createvillageuser:
-    handler: handlers/villageuser.createVillageUser
-    events:
-      - http:
-          path: village-users
-          method: post
-  listvillageuser:
-    handler: handlers/villageuser.listVillageUser
-    events:
-      - http:
-          path: village-users/{idv}
-          method: get
-  getvillageuser:
-    handler: handlers/villageuser.getVillageUser
-    events:
-      - http:
-          path: village-users/{idv}/{idu}
-          method: get
-  updatevillageuser:
-    handler: handlers/villageuser.updateVillageUser
-    events:
-      - http:
-          path: village-users/{idv}/{idu}
-          method: patch
-  deletevillageuser:
-    handler: handlers/villageuser.deleteVillageUser
-    events:
-      - http:
-          path: village-users/{idv}/{idu}
-          method: delete
+          cors: true
+          authorizer: aws_iam
 
 # Create our resources with separate CloudFormation templates
 resources:

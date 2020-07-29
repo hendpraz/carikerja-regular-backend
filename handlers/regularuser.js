@@ -2,89 +2,91 @@ import handler from "../libs/handler-lib";
 import RegularUser from "../models/RegularUser";
 import RegularPlan from "../models/RegularPlan";
 import { validateSuperuser } from "../libs/regularvalidator";
+import { connectToDatabase } from "../libs/db";
 
 const REGULAR_USER = 1;
 
 export const createRegularUser = handler(async (event, context) => {
-  console.log(event.body);
+  console.log(event);
+  await connectToDatabase();
   const data = JSON.parse(event.body);
 
   // Validate User First
   const identityId = event.requestContext.identity.cognitoIdentityId;
 
-  const foundUser = RegularUser.findOne({ identity_id: identityId });
-  if ( foundUser ) {
-    throw new Error("User already signed up");
-  } else {
-    const newUser = {};
+  const newUser = {};
+  // newUser.name = data.name;
+  // newUser.phone_number = data.phone_number;
+  // newUser.whatsapp_number = data.whatsapp_number;
+  // newUser.address = data.address;
+  newUser.email = data.email;
+  newUser.profile_picture = "default.jpg";
+  newUser.status = 'active';
+  newUser.subscription_plan = REGULAR_USER;
 
-    newUser.name = data.name;
-    newUser.email = data.email;
-    newUser.phone_number = data.phone_number;
-    newUser.whatsapp_number = data.whatsapp_number;
-    newUser.profile_picture = "default.jpg";
-    newUser.address = data.address;
-    newUser.status = 'active';
-    newUser.subscription_plan = REGULAR_USER;
-  
-    newUser.identity_id = identityId;
-  
-    await RegularUser.create(newUser);
-  }
+  newUser.identity_id = identityId;
+
+  await RegularUser.create(newUser);
 
   return { message: "OK" };
 });
 
 export const getMyProfile = handler(async (event, context) => {
-  const identityId = event.requestContext.identity.cognitoIdentityId;
-  const foundUser = RegularUser.findOne({ identity_id: identityId });
+  console.log(event);
+  await connectToDatabase();
 
-  return { message: "OK", foundUser: foundUser };
+  const identityId = event.requestContext.identity.cognitoIdentityId;
+  const foundUser = await RegularUser.findOne({ identity_id: identityId });
+
+  return foundUser;
 });
 
 export const getUserProfile = handler(async (event, context) => {
-  const userIdentityId = event.pathParameters.uid;
-  const foundUser = RegularUser.findOne({ identity_id: userIdentityId});
+  console.log(event);
+  await connectToDatabase();
 
-  return { message: "OK", foundUser: foundUser };
+  const userId = event.pathParameters.idu;
+  const foundUser = await RegularUser.findById(userId);
+
+  return foundUser;
 });
 
-export const updateRegularUser = handler(async (event, context) => {
-  // Validate User First
-  const userIdentityId = event.pathParameters.uid;
-  const identityId = event.requestContext.identity.cognitoIdentityId;
-  if (identityId != userIdentityId) {
-    throw new Error("Unauthorized update action by user");
-  }
+export const updateMyProfile = handler(async (event, context) => {
+  console.log(event);
+  await connectToDatabase();
 
-  console.log(event.body);
-  const data = JSON.parse(event.body);
+  const identityId = event.requestContext.identity.cognitoIdentityId;
 
   const foundUser = await RegularUser.findOne(
-    { identity_id: userIdentityId }
+    { identity_id: identityId }
   );
 
   if (!foundUser) {
     throw new Error("User not found");
   }
 
+  console.log(event.body);
+  const data = JSON.parse(event.body);
+
   foundUser.name = data.name;
   foundUser.phone_number = data.phone_number;
   foundUser.address = data.address;
+  foundUser.whatsapp_number = data.whatsapp_number;
   await foundUser.save();
 
   return { message: "OK" };
 });
 
 export const deactivateRegularUser = handler(async (event, context) => {
+  console.log(event);
   // Validate User First
   const identityId = event.requestContext.identity.cognitoIdentityId;
   await validateSuperuser(identityId);
 
-  const userIdentityId = event.pathParameters.uid;
+  const userId = event.pathParameters.idu;
 
   const foundUser = await RegularUser.findOne(
-    { identity_id: userIdentityId, subscription_plan: REGULAR_USER}
+    { _id: userId }
   );
 
   if (!foundUser) {
