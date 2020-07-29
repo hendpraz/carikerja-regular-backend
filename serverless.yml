@@ -80,6 +80,22 @@ functions:
           cors: true
           authorizer: aws_iam
   #### regularjob.js
+  getmyapplicationonjob:
+    handler: handlers/regularjob.getMyApplicationOnJob
+    events:
+      - http:
+          path: jobs/my-application/{idj}
+          method: get
+          cors: true
+          authorizer: aws_iam
+  applyregularjob:
+    handler: handlers/regularjob.applyRegularJob
+    events:
+      - http:
+          path: jobs/apply
+          method: post
+          cors: true
+          authorizer: aws_iam
   createregularjob:
     handler: handlers/regularjob.createRegularJob
     events:

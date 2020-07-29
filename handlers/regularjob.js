@@ -5,6 +5,19 @@ import RegularUser from "../models/RegularUser";
 import { connectToDatabase } from "../libs/db";
 import RegularApplication from "../models/RegularApplication";
 
+export const getMyApplicationOnJob = handler(async (event, context) => {
+  console.log(event);
+  await connectToDatabase();
+
+  const identityId = event.requestContext.identity.cognitoIdentityId;
+  const jobId = event.pathParameters.idj;
+
+  const foundUser = await RegularUser.findOne({ identity_id: identityId});
+  const foundApplication = await RegularApplication.findOne({regular_user: foundUser._id, regular_job: jobId});
+
+  return foundApplication;
+});
+
 export const applyRegularJob = handler(async (event, context) => {
   console.log(event);
   await connectToDatabase();
@@ -14,6 +27,10 @@ export const applyRegularJob = handler(async (event, context) => {
 
   const foundUser = await RegularUser.findOne({ identity_id: identityId});
 
+  const foundApplication = await RegularApplication.findOne({regular_user: foundUser._id, regular_job: jobId});
+  if (foundApplication) {
+    throw new Error("User already applied this job");
+  }
   const newApplication = {
     regular_user: foundUser._id,
     regular_job: jobId,
