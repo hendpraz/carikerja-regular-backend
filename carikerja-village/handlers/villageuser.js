@@ -92,7 +92,7 @@ export const createVillageAdmin = handler(async (event, context) => {
   const foundUser = await VillageUser.findById(userId);
 
   if (foundUser) {
-    if (foundUser.village == data.village) {
+    if (String(foundUser.village) == String(data.village)) {
       foundUser.subscription_plan = VILLAGE_ADMIN;
       foundUser.identity_id = data.identity_id;
       await foundUser.save();

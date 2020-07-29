@@ -24,7 +24,7 @@ export const validateAdmin = async (identityId, village, activity_description) =
   if (foundUser) {
     if ((foundUser.subscription_plan != VILLAGE_ADMIN)) {
       throw new Error("Auth Error: the requesting user isn't village admin");
-    } else if (foundUser.village != village){
+    } else if (String(foundUser.village) != String(village)){
       throw new Error("Auth Error: unauthorized village access");
     }
   } else {

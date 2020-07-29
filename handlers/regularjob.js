@@ -115,7 +115,7 @@ export const updateRegularJobDetail = handler(async (event, context) => {
 
   if ((!foundUser) || (!foundJob)) {
     throw new Error("User or job not found");
-  } else if (foundJob.owner == foundUser._id) {
+  } else if (String(foundJob.owner) == String(foundUser._id)) {
     foundJob.title = data.title;
     foundJob.description = data.description;
     foundJob.num_of_openings = data.num_of_openings;
@@ -144,7 +144,7 @@ export const updateRegularJobStatus = handler(async (event, context) => {
 
   if ((!foundUser) || (!foundJob)) {
     throw new Error("User or job not found");
-  } else if (foundJob.owner == foundUser._id) {
+  } else if (String(foundJob.owner) == String(foundUser._id)) {
     foundJob.status = data.status;
   } else {
     throw new Error("Unauthorized update action");

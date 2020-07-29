@@ -35,8 +35,9 @@ export const listMyJobApplications = handler(async (event, context) => {
 
   if ((!foundUser) || (!foundJob)) {
     throw new Error("User or job not found");
-  } else if (foundJob.owner == foundUser._id) {
-    foundRegularApplication = await RegularApplication.find({ regular_job: jobId });
+  } else if (String(foundJob.owner) == String(foundUser._id)) {
+    foundRegularApplication = await RegularApplication.find({ regular_job: jobId })
+      .populate('regular_job');
   } else {
     throw new Error("Unauthorized update action");
   }
@@ -56,18 +57,18 @@ export const getApplication = handler(async (event, context) => {
 
   const foundRegularApplication = await RegularApplication.findById(applicationId)
     .populate('regular_job');
-  const foundUser = await RegularUser.findOne({ identityId });
+  const foundUser = await RegularUser.findOne({ identity_id: identityId });
 
   if ((!foundRegularApplication)) {
     throw new Error("Application or job not found");
   } else if (foundUser.subscription_plan == REGULAR_JOBPOSTER) {
-    if (foundRegularApplication.regular_job.owner != foundUser._id) {
+    if (String(foundRegularApplication.regular_job.owner) != String(foundUser._id)) {
       throw new Error("Unauthorized action by jobposter");
-    } else if (foundRegularApplication.status == 'sent') {
-      foundRegularApplication.status = 'reviewed';
+    } else if (foundRegularApplication.status == "sent") {
+      foundRegularApplication.status = "reviewed";
       foundRegularApplication.save();
     }
-  } else if ((foundRegularApplication.regular_user != foundUser._id)) {
+  } else if (String(foundRegularApplication.regular_user) != String(foundUser._id)) {
     throw new Error("Unauthorized action by regular user");
   }
 
@@ -88,7 +89,7 @@ export const acceptApplication = handler(async (event, context) => {
 
   if ((!foundUser) || (!foundRegularApplication)) {
     throw new Error("(Requesting user) or (application) not found");
-  } else if (foundJob.owner == foundUser._id) {
+  } else if (String(foundJob.owner) == String(foundUser._id)) {
     foundJob.num_of_openings -= 1;
     foundRegularApplication.status = 'accepted';
 
@@ -115,7 +116,7 @@ export const rejectApplication = handler(async (event, context) => {
 
   if ((!foundUser) || (!foundRegularApplication)) {
     throw new Error("(Requesting user) or (application) not found");
-  } else if (foundRegularApplication.regular_job.owner == foundUser._id) {
+  } else if (String(foundRegularApplication.regular_job.owner) == String(foundUser._id)) {
     foundRegularApplication.status = 'rejected';
     await foundRegularApplication.save();
   } else {
