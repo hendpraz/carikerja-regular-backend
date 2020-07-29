@@ -5,7 +5,7 @@ import RegularUser from "../models/RegularUser";
 import { connectToDatabase } from "../libs/db";
 
 export const createRegularJob = handler(async (event, context) => {
-  console.log(event.body);
+  console.log(event);
   const data = JSON.parse(event.body);
 
   // Validate User First
@@ -30,6 +30,7 @@ export const createRegularJob = handler(async (event, context) => {
 });
 
 export const getRegularJob = handler(async (event, context) => {
+  console.log(event);
   await connectToDatabase();
 
   const jobId = event.pathParameters.idj;
@@ -44,6 +45,7 @@ export const getRegularJob = handler(async (event, context) => {
 });
 
 export const listMyJob = handler(async (event, context) => {
+  console.log(event);
   await connectToDatabase();
 
   const identityId = event.requestContext.identity.cognitoIdentityId;
@@ -59,9 +61,8 @@ export const listMyJob = handler(async (event, context) => {
 });
 
 export const updateRegularJobDetail = handler(async (event, context) => {
+  console.log(event);
   const jobId = event.pathParameters.idj;
-
-  console.log(event.body);
   const data = JSON.parse(event.body);
 
   // Validate User First
@@ -89,9 +90,8 @@ export const updateRegularJobDetail = handler(async (event, context) => {
 });
 
 export const updateRegularJobStatus = handler(async (event, context) => {
+  console.log(event);
   const jobId = event.pathParameters.idj;
-
-  console.log(event.body);
   const data = JSON.parse(event.body);
 
   // Validate User First

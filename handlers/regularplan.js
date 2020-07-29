@@ -7,6 +7,7 @@ const REGULAR_USER = 1;
 const REGULAR_JOBPOSTER = 2;
 
 export const createRegularJobposter = handler(async (event, context) => {
+  console.log(event);
   // Validate User First
   const identityId = event.requestContext.identity.cognitoIdentityId;
   await validateSuperuser(identityId);
@@ -40,6 +41,7 @@ export const createRegularJobposter = handler(async (event, context) => {
 });
 
 export const revokeJobposter = handler(async (event, context) => {
+  console.log(event);
   // Validate User First
   const identityId = event.requestContext.identity.cognitoIdentityId;
   await validateSuperuser(identityId);

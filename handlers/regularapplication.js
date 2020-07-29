@@ -8,6 +8,7 @@ import { connectToDatabase } from "../libs/db";
 const REGULAR_JOBPOSTER = 2;
 
 export const listMyApplications = handler(async (event, context) => {
+  console.log(event);
   await connectToDatabase();
 
   const identityId = event.requestContext.identity.cognitoIdentityId;
@@ -19,6 +20,7 @@ export const listMyApplications = handler(async (event, context) => {
 });
 
 export const listMyJobApplications = handler(async (event, context) => {
+  console.log(event);
   const jobId = event.pathParameters.idj;
 
   // Validate User First
@@ -42,6 +44,7 @@ export const listMyJobApplications = handler(async (event, context) => {
 });
 
 export const getApplication = handler(async (event, context) => {
+  console.log(event);
   await connectToDatabase();
 
   // Either user or jobposter
@@ -71,6 +74,7 @@ export const getApplication = handler(async (event, context) => {
 });
 
 export const acceptApplication = handler(async (event, context) => {
+  console.log(event);
   const applicationId = event.pathParameters.ida;
 
   // Validate User First
@@ -97,6 +101,7 @@ export const acceptApplication = handler(async (event, context) => {
 });
 
 export const rejectApplication = handler(async (event, context) => {
+  console.log(event);
   const applicationId = event.pathParameters.ida;
 
   // Validate User First

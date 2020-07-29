@@ -3,20 +3,17 @@ import RegularUser from "../models/RegularUser";
 import RegularPlan from "../models/RegularPlan";
 import { validateSuperuser } from "../libs/regularvalidator";
 import { connectToDatabase } from "../libs/db";
-import SubscriptionPlan from "../models/SubscriptionPlan";
 
 const REGULAR_USER = 1;
 
 export const createRegularUser = handler(async (event, context) => {
-  await connectToDatabase();
-
   console.log(event);
+  await connectToDatabase();
   const data = JSON.parse(event.body);
 
   // Validate User First
   const identityId = event.requestContext.identity.cognitoIdentityId;
 
-  const subscriptionPlan = await SubscriptionPlan.findOne({subs_id: REGULAR_USER});
   const newUser = {};
   // newUser.name = data.name;
   // newUser.phone_number = data.phone_number;
@@ -25,7 +22,7 @@ export const createRegularUser = handler(async (event, context) => {
   newUser.email = data.email;
   newUser.profile_picture = "default.jpg";
   newUser.status = 'active';
-  newUser.subscription_plan = subscriptionPlan._id;
+  newUser.subscription_plan = REGULAR_USER;
 
   newUser.identity_id = identityId;
 
@@ -35,6 +32,7 @@ export const createRegularUser = handler(async (event, context) => {
 });
 
 export const getMyProfile = handler(async (event, context) => {
+  console.log(event);
   await connectToDatabase();
 
   const identityId = event.requestContext.identity.cognitoIdentityId;
@@ -44,6 +42,7 @@ export const getMyProfile = handler(async (event, context) => {
 });
 
 export const getUserProfile = handler(async (event, context) => {
+  console.log(event);
   await connectToDatabase();
 
   const userId = event.pathParameters.idu;
@@ -53,6 +52,7 @@ export const getUserProfile = handler(async (event, context) => {
 });
 
 export const updateMyProfile = handler(async (event, context) => {
+  console.log(event);
   await connectToDatabase();
 
   const identityId = event.requestContext.identity.cognitoIdentityId;
@@ -78,6 +78,7 @@ export const updateMyProfile = handler(async (event, context) => {
 });
 
 export const deactivateRegularUser = handler(async (event, context) => {
+  console.log(event);
   // Validate User First
   const identityId = event.requestContext.identity.cognitoIdentityId;
   await validateSuperuser(identityId);
@@ -85,7 +86,7 @@ export const deactivateRegularUser = handler(async (event, context) => {
   const userId = event.pathParameters.idu;
 
   const foundUser = await RegularUser.findOne(
-    { _id: userId, subscription_plan: REGULAR_USER}
+    { _id: userId }
   );
 
   if (!foundUser) {

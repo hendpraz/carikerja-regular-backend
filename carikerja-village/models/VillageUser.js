@@ -21,9 +21,9 @@ const documentSchema = new Schema(
     phone_number: { type: String, required: true },
     address: { type: String, required: true },
     status: { type: String, required: true },
-    subscription_plan: { type: Id, required: true, ref: 'SubscriptionPlan' },
+    subscription_plan: { type: Number, required: true },
     village: { type: Id, required: true, ref: 'Village' },
-    identity_id: { type: String }
+    identity_id: { type: String, unique: true }
   },
   { timestamps: true }
 );

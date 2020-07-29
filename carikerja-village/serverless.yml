@@ -31,6 +31,7 @@ functions:
           path: villages
           method: post
           cors: true
+          authorizer: aws_iam
   getvillageprofile:
     handler: handlers/village.getVillageProfile
     events:
@@ -38,6 +39,7 @@ functions:
           path: villages/profile/{idv}
           method: get
           cors: true
+          authorizer: aws_iam
   updatevillageprofile:
     handler: handlers/village.updateVillageProfile
     events:
@@ -45,6 +47,7 @@ functions:
           path: villages/profile/{idv}
           method: patch
           cors: true
+          authorizer: aws_iam
   listvillageactivity:
     handler: handlers/village.listVillageActivity
     events:
@@ -52,6 +55,7 @@ functions:
           path: villages/activities/{idv}
           method: get
           cors: true
+          authorizer: aws_iam
   #### villagejob.js
   createvillagejob:
     handler: handlers/villagejob.createVillageJob
@@ -60,6 +64,7 @@ functions:
           path: village-jobs
           method: post
           cors: true
+          authorizer: aws_iam
   listvillagejob:
     handler: handlers/villagejob.listVillageJob
     events:
@@ -67,6 +72,7 @@ functions:
           path: village-jobs/{idv}
           method: get
           cors: true
+          authorizer: aws_iam
   getvillagejob:
     handler: handlers/villagejob.getVillageJob
     events:
@@ -74,6 +80,7 @@ functions:
           path: village-jobs/{idv}/{idj}
           method: get
           cors: true
+          authorizer: aws_iam
   updatevillagejobdetail:
     handler: handlers/villagejob.updateVillageJobDetail
     events:
@@ -81,6 +88,7 @@ functions:
           path: village-job-detail/{idv}/{idj}
           method: patch
           cors: true
+          authorizer: aws_iam
   updatevillagejobstatus:
     handler: handlers/villagejob.updateVillageJobStatus
     events:
@@ -88,6 +96,7 @@ functions:
           path: village-job-status/{idv}/{idj}
           method: patch
           cors: true
+          authorizer: aws_iam
   completevillagejob:
     handler: handlers/villagejob.completeVillageJob
     events:
@@ -95,6 +104,7 @@ functions:
           path: village-job-complete/{idv}/{idj}
           method: post
           cors: true
+          authorizer: aws_iam
   #### villageplan.js
   renewvillagesubscription:
     handler: handlers/villageplan.renewVillageSubscription
@@ -103,6 +113,7 @@ functions:
           path: village-plan/renew/{idvp}
           method: patch
           cors: true
+          authorizer: aws_iam
   updatevillagesubscription:
     handler: handlers/villageplan.updateVillageSubscription
     events:
@@ -110,6 +121,7 @@ functions:
           path: village-plan/update/{idvp}
           method: patch
           cors: true
+          authorizer: aws_iam
   stopvillagesubscription:
     handler: handlers/villageplan.stopVillageSubscription
     events:
@@ -117,6 +129,7 @@ functions:
           path: village-plan/stop/{idvp}
           method: patch
           cors: true
+          authorizer: aws_iam
   reactivatevillagesubscription:
     handler: handlers/villageplan.reactivateVillageSubscription
     events:
@@ -124,6 +137,7 @@ functions:
           path: village-plan/reactivate/{idvp}
           method: patch
           cors: true
+          authorizer: aws_iam
   #### villageuser.js (admin part)
   listvillageadmin:
     handler: handlers/villageuser.listVillageAdmin
@@ -132,6 +146,7 @@ functions:
           path: village-admins/{idv}
           method: get
           cors: true
+          authorizer: aws_iam
   getvillageadmin:
     handler: handlers/villageuser.getVillageAdmin
     events:
@@ -139,6 +154,7 @@ functions:
           path: village-admins/{idv}/{idu}
           method: get
           cors: true
+          authorizer: aws_iam
   updatevillageadmin:
     handler: handlers/villageuser.updateVillageAdmin
     events:
@@ -146,6 +162,7 @@ functions:
           path: village-admins/update/{idv}/{idu}
           method: patch
           cors: true
+          authorizer: aws_iam
   createvillageadmin:
     handler: handlers/villageuser.createVillageAdmin
     events:
@@ -153,6 +170,7 @@ functions:
           path: village-admins/create/{idu}
           method: patch
           cors: true
+          authorizer: aws_iam
   revokevillageadmin:
     handler: handlers/villageuser.revokeVillageAdmin
     events:
@@ -160,6 +178,7 @@ functions:
           path: village-admins/revoke/{idu}
           method: patch
           cors: true
+          authorizer: aws_iam
   #### villageuser.js (user part)
   createvillageuser:
     handler: handlers/villageuser.createVillageUser
@@ -168,6 +187,7 @@ functions:
           path: village-users
           method: post
           cors: true
+          authorizer: aws_iam
   listvillageuser:
     handler: handlers/villageuser.listVillageUser
     events:
@@ -175,6 +195,7 @@ functions:
           path: village-users/{idv}
           method: get
           cors: true
+          authorizer: aws_iam
   getvillageuser:
     handler: handlers/villageuser.getVillageUser
     events:
@@ -182,6 +203,7 @@ functions:
           path: village-users/{idv}/{idu}
           method: get
           cors: true
+          authorizer: aws_iam
   updatevillageuser:
     handler: handlers/villageuser.updateVillageUser
     events:
@@ -189,6 +211,7 @@ functions:
           path: village-users/{idv}/{idu}
           method: patch
           cors: true
+          authorizer: aws_iam
   deletevillageuser:
     handler: handlers/villageuser.deleteVillageUser
     events:
@@ -196,6 +219,7 @@ functions:
           path: village-users/{idv}/{idu}
           method: delete
           cors: true
+          authorizer: aws_iam
 
 # Create our resources with separate CloudFormation templates
 resources:

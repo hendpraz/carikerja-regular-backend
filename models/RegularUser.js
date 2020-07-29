@@ -15,19 +15,19 @@ const SubscriptionPlan = require('./SubscriptionPlan');
  * @property {String} subscription_plan Reference ke subscription plan
  * @property {String} identity_id cognito identity id pengguna
  */
-const Id = Schema.Types.ObjectId;
+// const Id = Schema.Types.ObjectId;
 const documentSchema = new Schema(
   {
     name: { type: String },
     email: { type: String, required: true, unique: true },
-    phone_number: { type: String, unique: true },
+    phone_number: { type: String },
     whatsapp_number: { type: String },
     profile_picture: { type: String },
     address: { type: String },
     status: { type: String, required: true },
-    subscription_plan: { type: Id, required: true, ref: 'SubscriptionPlan' },
+    subscription_plan: { type: Number, required: true },
     plan_expiry_date : Date,
-    identity_id: { type: String, required: true }
+    identity_id: { type: String, required: true, unique: true }
   },
   { timestamps: true }
 );
