@@ -14,9 +14,10 @@ export const listMyApplications = handler(async (event, context) => {
   const identityId = event.requestContext.identity.cognitoIdentityId;
 
   const userFound = await RegularUser.findOne({ identity_id: identityId });
-  const applicationFound = await RegularApplication.find({ regular_user: userFound._id });
+  const applicationFound = await RegularApplication.find({ regular_user: userFound._id })
+    .populate('regular_job');
 
-  return { message: "OK", applications: applicationFound };
+  return applicationFound;
 });
 
 export const listMyJobApplications = handler(async (event, context) => {
@@ -40,7 +41,7 @@ export const listMyJobApplications = handler(async (event, context) => {
     throw new Error("Unauthorized update action");
   }
 
-  return { message: "OK", applications: foundRegularApplication };
+  return foundRegularApplication;
 });
 
 export const getApplication = handler(async (event, context) => {
@@ -70,7 +71,7 @@ export const getApplication = handler(async (event, context) => {
     throw new Error("Unauthorized action by regular user");
   }
 
-  return { message: "OK", application: foundRegularApplication };
+  return foundRegularApplication;
 });
 
 export const acceptApplication = handler(async (event, context) => {

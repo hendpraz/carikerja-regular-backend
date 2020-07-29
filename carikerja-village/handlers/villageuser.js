@@ -24,7 +24,7 @@ export const listVillageAdmin = handler(async (event, context) => {
     { subscription_plan: VILLAGE_ADMIN, village: villageId }
   );
 
-  return { message: "OK", admin_list: foundAdmins };
+  return foundAdmins;
 });
 
 export const getVillageAdmin = handler(async (event, context) => {
@@ -43,7 +43,7 @@ export const getVillageAdmin = handler(async (event, context) => {
     throw new Error("Admin not found");
   }
 
-  return { message: "OK", admin: foundUser };
+  return foundUser;
 });
 
 export const updateVillageAdmin = handler(async (event, context) => {
@@ -170,7 +170,7 @@ export const listVillageUser  = handler(async (event, context) => {
     { subscription_plan: VILLAGE_USER, village: villageId }
   );
 
-  return { message: "OK", user_list: foundUsers };
+  return foundUsers;
 });
 
 export const getVillageUser = handler(async (event, context) => {
@@ -189,7 +189,7 @@ export const getVillageUser = handler(async (event, context) => {
     throw new Error("User not found");
   }
 
-  return { message: "OK", user: foundUser };
+  return foundUser;
 });
 
 export const updateVillageUser = handler(async (event, context) => {

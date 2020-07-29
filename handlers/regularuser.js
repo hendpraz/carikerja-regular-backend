@@ -38,7 +38,7 @@ export const getMyProfile = handler(async (event, context) => {
   const identityId = event.requestContext.identity.cognitoIdentityId;
   const foundUser = await RegularUser.findOne({ identity_id: identityId });
 
-  return { message: "OK", foundUser: foundUser };
+  return foundUser;
 });
 
 export const getUserProfile = handler(async (event, context) => {
@@ -48,7 +48,7 @@ export const getUserProfile = handler(async (event, context) => {
   const userId = event.pathParameters.idu;
   const foundUser = await RegularUser.findById(userId);
 
-  return { message: "OK", foundUser: foundUser };
+  return foundUser;
 });
 
 export const updateMyProfile = handler(async (event, context) => {

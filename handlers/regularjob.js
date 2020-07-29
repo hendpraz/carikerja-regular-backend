@@ -3,6 +3,29 @@ import RegularJob from "../models/RegularJob";
 import { validateJobposter } from "../libs/regularvalidator";
 import RegularUser from "../models/RegularUser";
 import { connectToDatabase } from "../libs/db";
+import RegularApplication from "../models/RegularApplication";
+
+export const applyRegularJob = handler(async (event, context) => {
+  console.log(event);
+  await connectToDatabase();
+  const data = JSON.parse(event.body);
+  const identityId = event.requestContext.identity.cognitoIdentityId;
+  const jobId = event.pathParameters.idj;
+
+  const foundUser = await RegularUser.findOne({ identity_id: identityId});
+
+  const newApplication = {
+    regular_user: foundUser._id,
+    regular_job: jobId,
+    status: "sent",
+    attachment: data.attachment,
+    cover_letter: data.cover_letter
+  };
+
+  await RegularApplication.create(newApplication);
+
+  return { message: "OK" };
+});
 
 export const createRegularJob = handler(async (event, context) => {
   console.log(event);
@@ -42,7 +65,7 @@ export const getRegularJob = handler(async (event, context) => {
     throw new Error("Job not found");
   }
 
-  return { message: "OK", job: foundJob };
+  return foundJob;
 });
 
 export const listMyJob = handler(async (event, context) => {
@@ -58,7 +81,7 @@ export const listMyJob = handler(async (event, context) => {
     throw new Error("Job not found");
   }
 
-  return { message: "OK", jobs: foundJob };
+  return foundJob;
 });
 
 export const updateRegularJobDetail = handler(async (event, context) => {

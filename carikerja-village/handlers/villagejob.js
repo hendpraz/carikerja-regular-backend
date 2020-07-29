@@ -36,7 +36,7 @@ export const listVillageJob = handler(async (event, context) => {
     { village: villageId }
   );
 
-  return { message: "OK", job_list: foundJobs };
+  return foundJobs;
 });
 
 export const getVillageJob = handler(async (event, context) => {
@@ -53,7 +53,7 @@ export const getVillageJob = handler(async (event, context) => {
     throw new Error("Job not found");
   }
 
-  return { message: "OK", job: foundJob };
+  return foundJob;
 });
 
 export const updateVillageJobDetail = handler(async (event, context) => {

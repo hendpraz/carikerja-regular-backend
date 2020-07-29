@@ -16,6 +16,8 @@ const documentSchema = new Schema(
     regular_user: { type: Id, required: true, ref: 'RegularUser' },
     regular_job: {type: Id, required: true, ref: 'RegularJob'},
     status: { type: String, required: true },
+    attachment: { type: String },
+    cover_letter: { type: String }
   },
   { timestamps: true }
 );
