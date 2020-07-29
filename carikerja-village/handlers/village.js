@@ -3,6 +3,8 @@ import Village from "../models/Village";
 import VillagePlan from "../models/VillagePlan";
 import { validateAdmin } from "../libs/villagevalidator";
 import { validateSuperuser } from "../libs/villagevalidator";
+import VillageUser from "../models/VillageUser";
+import { connectToDatabase } from "../libs/db";
 
 export const createVillage = handler(async (event, context) => {
   console.log(event.body);
@@ -33,6 +35,16 @@ export const createVillage = handler(async (event, context) => {
   await VillagePlan.create(newVillagePlan);
 
   return { message: "OK" };
+});
+
+export const getMyVillageProfile = handler(async (event, context) => {
+  await connectToDatabase();
+  console.log(event);
+  const identityId = event.requestContext.identity.cognitoIdentityId;
+  const foundUser = await VillageUser.findOne({ identity_id: identityId });
+  const foundVillage = await Village.findById(foundUser.village);
+
+  return foundVillage;
 });
 
 export const getVillageProfile = handler(async (event, context) => {
