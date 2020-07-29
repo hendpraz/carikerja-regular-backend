@@ -56,7 +56,8 @@ export const getApplication = handler(async (event, context) => {
   const identityId = event.requestContext.identity.cognitoIdentityId;
 
   const foundRegularApplication = await RegularApplication.findById(applicationId)
-    .populate('regular_job');
+    .populate('regular_job')
+    .populate('regular_user');
   const foundUser = await RegularUser.findOne({ identity_id: identityId });
 
   if ((!foundRegularApplication)) {
