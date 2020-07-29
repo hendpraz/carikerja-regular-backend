@@ -15,7 +15,7 @@ export const validateAdmin = async (identityId, village, activity_description) =
   });
 
   const foundVillagePlan = await Village.findOne({village: village});
-  if (foundVillagePlan.status === 'inactive') {
+  if (foundVillagePlan.status === "inactive") {
     throw new Error("Inactive village access");
   } else if (foundVillagePlan.expiry_date < Date.now()) {
     throw new Error("Village plan is expired");

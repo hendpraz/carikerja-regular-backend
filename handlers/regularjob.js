@@ -35,7 +35,8 @@ export const getRegularJob = handler(async (event, context) => {
 
   const jobId = event.pathParameters.idj;
 
-  const foundJob = await RegularJob.findById(jobId);
+  const foundJob = await RegularJob.findById(jobId)
+    .populate('owner');
 
   if (!foundJob) {
     throw new Error("Job not found");
