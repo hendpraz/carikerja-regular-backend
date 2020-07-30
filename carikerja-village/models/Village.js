@@ -18,6 +18,6 @@ const documentSchema = new Schema(
   { timestamps: true }
 );
 
-const RegularUser = model('VillageUser', documentSchema);
+const Village = model('Village', documentSchema);
 
-export default RegularUser;
+export default Village;

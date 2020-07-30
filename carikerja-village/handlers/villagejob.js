@@ -34,7 +34,7 @@ export const listVillageJob = handler(async (event, context) => {
 
   const foundJobs = await VillageJob.find(
     { village: villageId }
-  );
+  ).populate('owner');
 
   return foundJobs;
 });
@@ -47,7 +47,7 @@ export const getVillageJob = handler(async (event, context) => {
   const identityId = event.requestContext.identity.cognitoIdentityId;
   await validateAdmin(identityId, villageId);
 
-  const foundJob = await VillageJob.findById(jobId);
+  const foundJob = await VillageJob.findById(jobId).populate('owner');
 
   if (!foundJob) {
     throw new Error("Job not found");
@@ -122,7 +122,7 @@ export const completeVillageJob = handler(async (event, context) => {
   console.log(event.body);
   const data = JSON.parse(event.body);
 
-  const foundJob = await VillageJob.findById(jobId);
+  const foundJob = await VillageJob.findOne({_id: jobId, village: villageId});
 
   if (!foundJob) {
     throw new Error("Job not found");
@@ -130,7 +130,8 @@ export const completeVillageJob = handler(async (event, context) => {
 
   const newVillageAcceptance = {};
 
-  foundJob.status = "inactive";
+  foundJob.num_of_openings -= 1;
+
   newVillageAcceptance.village_user = data.village_user;
   newVillageAcceptance.village_job = jobId;
   newVillageAcceptance.date = Date.now();

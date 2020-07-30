@@ -32,6 +32,14 @@ functions:
           method: post
           cors: true
           authorizer: aws_iam
+  getmyvillageprofile:
+    handler: handlers/village.getMyVillageProfile
+    events:
+      - http:
+          path: villages/my-village
+          method: get
+          cors: true
+          authorizer: aws_iam
   getvillageprofile:
     handler: handlers/village.getVillageProfile
     events:
