@@ -31,7 +31,7 @@ export const createVillage = handler(async (event, context) => {
   tempDate.setDate(tempDate.getDate() + 30);
 
   newVillagePlan.expiry_date = tempDate;
-  newVillagePlan.status = 'active';
+  newVillagePlan.status = "active";
 
   await VillagePlan.create(newVillagePlan);
 
