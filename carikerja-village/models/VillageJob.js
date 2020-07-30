@@ -10,7 +10,7 @@ const Village = require('./Village');
  * @property {String} owner Id pemilik pekerjaan
  * @property {String} description Deskripsi pekerjaan
  * @property {Number} num_of_openings Banyaknya lowongan yang dibuka
- * @property {Number} status Status lowongan : [1 -> open, 0 -> closed]
+ * @property {Number} status Status lowongan : [active/inactive]
  * @property {String} location Lokasi pekerjaan
  * @property {String} profession Jenis profesi pekerjaan
  */
@@ -22,7 +22,7 @@ const documentSchema = new Schema(
     description: { type: String, required: true },
     num_of_openings: { type: Number, required: true },
     village: { type: Id, required: true, ref: 'Village' },
-    status: { type: Number, required: true }
+    status: { type: String, required: true }
   },
   { timestamps: true }
 );
