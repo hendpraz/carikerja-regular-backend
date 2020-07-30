@@ -23,7 +23,7 @@ const documentSchema = new Schema(
     status: { type: String, required: true },
     subscription_plan: { type: Number, required: true },
     village: { type: Id, required: true, ref: 'Village' },
-    identity_id: { type: String, unique: true }
+    identity_id: { type: String }
   },
   { timestamps: true }
 );

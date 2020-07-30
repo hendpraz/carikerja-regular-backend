@@ -34,7 +34,7 @@ export const listVillageJob = handler(async (event, context) => {
 
   const foundJobs = await VillageJob.find(
     { village: villageId }
-  );
+  ).populate('owner');
 
   return foundJobs;
 });
@@ -47,7 +47,7 @@ export const getVillageJob = handler(async (event, context) => {
   const identityId = event.requestContext.identity.cognitoIdentityId;
   await validateAdmin(identityId, villageId);
 
-  const foundJob = await VillageJob.findById(jobId);
+  const foundJob = await VillageJob.findById(jobId).populate('owner');
 
   if (!foundJob) {
     throw new Error("Job not found");
