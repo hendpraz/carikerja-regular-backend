@@ -1,7 +1,7 @@
 import { connectToDatabase } from './db';
 import VillageActivity from '../models/VillageActivity';
 import VillageUser from '../models/VillageUser';
-import Village from '../models/Village';
+import VillagePlan from '../models/VillagePlan';
 
 // Village Subscription Plan
 const VILLAGE_ADMIN = 4;
@@ -9,16 +9,23 @@ const VILLAGE_SUPERUSER = 7;
 
 export const validateAdmin = async (identityId, village, activity_description) => {
   await connectToDatabase();
+  console.log(identityId);
+  console.log(village);
+  console.log(activity_description);
 
   const foundUser = await VillageUser.findOne({
     identity_id: identityId
   });
 
-  const foundVillagePlan = await Village.findOne({village: village});
-  if (foundVillagePlan.status === "inactive") {
-    throw new Error("Inactive village access");
-  } else if (foundVillagePlan.expiry_date < Date.now()) {
-    throw new Error("Village plan is expired");
+  const foundVillagePlan = await VillagePlan.findOne({village: String(village)});
+  if (foundVillagePlan) {
+    if (foundVillagePlan.status === "inactive") {
+      throw new Error("Inactive village access");
+    } else if (foundVillagePlan.expiry_date < Date.now()) {
+      throw new Error("Village plan is expired");
+    }
+  } else {
+    throw new Error("Village plan not found");
   }
 
   if (foundUser) {
@@ -37,6 +44,7 @@ export const validateAdmin = async (identityId, village, activity_description) =
     newVillageActivity.village_user = foundUser._id;
     newVillageActivity.village = foundUser.village;
     newVillageActivity.activity_description = activity_description;
+    newVillageActivity.date = Date.now();
 
     await VillageActivity.create(newVillageActivity);
   }

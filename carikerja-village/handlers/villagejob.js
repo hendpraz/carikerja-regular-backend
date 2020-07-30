@@ -122,7 +122,7 @@ export const completeVillageJob = handler(async (event, context) => {
   console.log(event.body);
   const data = JSON.parse(event.body);
 
-  const foundJob = await VillageJob.findById(jobId);
+  const foundJob = await VillageJob.findOne({_id: jobId, village: villageId});
 
   if (!foundJob) {
     throw new Error("Job not found");
@@ -130,7 +130,8 @@ export const completeVillageJob = handler(async (event, context) => {
 
   const newVillageAcceptance = {};
 
-  foundJob.status = "inactive";
+  foundJob.num_of_openings -= 1;
+
   newVillageAcceptance.village_user = data.village_user;
   newVillageAcceptance.village_job = jobId;
   newVillageAcceptance.date = Date.now();

@@ -17,7 +17,7 @@ const documentSchema = new Schema(
     village_user: { type: Id, required: true, ref: 'VillageUser' },
     village: {type: Id, required: true, ref: 'Village'},
     activity_description: {type: String, required: true},
-    date: { type: Date, required: true },
+    date: { type: Date },
   },
   { timestamps: true }
 );
