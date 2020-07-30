@@ -34,7 +34,7 @@ export const createRegularJobposter = handler(async (event, context) => {
   tempDate.setDate(tempDate.getDate() + 30);
 
   foundRegularPlan.expiry_date = tempDate;
-  foundRegularPlan.status = 'active';
+  foundRegularPlan.status = "active";
   foundRegularPlan.save();
 
   return { message: "OK" };
@@ -62,7 +62,7 @@ export const revokeJobposter = handler(async (event, context) => {
   const foundRegularPlan = await RegularPlan.findOne({regular_user: foundUser._id });
 
   foundRegularPlan.subscription_plan = REGULAR_USER;
-  foundRegularPlan.status = 'inactive';
+  foundRegularPlan.status = "inactive";
   foundRegularPlan.save();
 
   return { message: "OK" };

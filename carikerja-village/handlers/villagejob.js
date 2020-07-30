@@ -17,7 +17,7 @@ export const createVillageJob = handler(async (event, context) => {
   newJob.owner = data.owner;
   newJob.description = data.description;
   newJob.num_of_openings = data.num_of_openings;
-  newJob.status = 'active';
+  newJob.status = "active";
   newJob.village = data.village;
 
   await VillageJob.create(newJob);
@@ -74,7 +74,7 @@ export const updateVillageJobDetail = handler(async (event, context) => {
   }
 
   foundJob.title = data.title;
-  foundJob.owner = data.owner;
+  // foundJob.owner = data.owner;
   foundJob.description = data.description;
   foundJob.num_of_openings = data.num_of_openings;
 

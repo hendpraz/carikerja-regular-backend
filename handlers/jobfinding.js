@@ -37,7 +37,7 @@ export const findjobsbot = async (event, context) => {
       .limit(limit)
       .skip((page - 1) * limit);
 
-    let jobsMessage = '';
+    let jobsMessage = "";
     let i = 1;
     foundJobs.forEach(element => {
       jobsMessage += `${i}. ${element.title} - ${element.location} - ${element.owner.name} - ${element.owner.whatsapp_number}\n`;

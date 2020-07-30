@@ -147,7 +147,7 @@ export const createVillageUser = handler(async (event, context) => {
   newUser.name = data.name;
   newUser.phone_number = data.phone_number;
   newUser.address = data.address;
-  newUser.status = 'active';
+  newUser.status = "active";
   newUser.subscription_plan = VILLAGE_USER;
   newUser.village = data.village;
 

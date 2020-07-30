@@ -38,7 +38,7 @@ export const stopVillageSubscription = handler(async (event, context) => {
   const villageId = event.pathParameters.idv;
   const foundVillagePlan = await Village.findOne({ village: villageId });
 
-  foundVillagePlan.status = 'inactive';
+  foundVillagePlan.status = "inactive";
   await foundVillagePlan.save();
 
   return { message: "OK" };
@@ -51,7 +51,7 @@ export const reactivateVillageSubscription = handler(async (event, context) => {
   const villageId = event.pathParameters.idv;
   const foundVillagePlan = await Village.findOne({ village: villageId });
 
-  foundVillagePlan.status = 'active';
+  foundVillagePlan.status = "active";
   await foundVillagePlan.save();
 
   return { message: "OK" };

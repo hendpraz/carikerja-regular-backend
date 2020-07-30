@@ -21,7 +21,7 @@ export const createRegularUser = handler(async (event, context) => {
   // newUser.address = data.address;
   newUser.email = data.email;
   newUser.profile_picture = "default.jpg";
-  newUser.status = 'active';
+  newUser.status = "active";
   newUser.subscription_plan = REGULAR_USER;
 
   newUser.identity_id = identityId;
@@ -93,11 +93,11 @@ export const deactivateRegularUser = handler(async (event, context) => {
     throw new Error("User not found");
   }
 
-  foundUser.status = 'inactive';
+  foundUser.status = "inactive";
   await foundUser.save();
 
   const foundRegularPlan = await RegularPlan.findOne({regular_user: foundUser._id });
-  foundRegularPlan.status = 'inactive';
+  foundRegularPlan.status = "inactive";
   foundRegularPlan.save();
 
   return { message: "OK" };

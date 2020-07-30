@@ -92,7 +92,7 @@ export const acceptApplication = handler(async (event, context) => {
     throw new Error("(Requesting user) or (application) not found");
   } else if (String(foundJob.owner) == String(foundUser._id)) {
     foundJob.num_of_openings -= 1;
-    foundRegularApplication.status = 'accepted';
+    foundRegularApplication.status = "accepted";
 
     await foundRegularApplication.save();
     await foundJob.save();
@@ -118,7 +118,7 @@ export const rejectApplication = handler(async (event, context) => {
   if ((!foundUser) || (!foundRegularApplication)) {
     throw new Error("(Requesting user) or (application) not found");
   } else if (String(foundRegularApplication.regular_job.owner) == String(foundUser._id)) {
-    foundRegularApplication.status = 'rejected';
+    foundRegularApplication.status = "rejected";
     await foundRegularApplication.save();
   } else {
     throw new Error("Unauthorized update action");

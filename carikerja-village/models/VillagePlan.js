@@ -9,7 +9,7 @@ const Village = require('./Village');
  * @property {String} village Id ke object Village
  * @property {String} subscription_plan Id ke object SubscriptionPlan
  * @property {Date} expiry_date Tanggal kadaluarsa paket
- * @property {String} status ['active', 'inactive']
+ * @property {String} status ["active", "inactive"]
  */
 const Id = Schema.Types.ObjectId;
 const documentSchema = new Schema(
