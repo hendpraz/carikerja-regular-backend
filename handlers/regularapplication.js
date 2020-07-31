@@ -69,7 +69,7 @@ export const getApplication = handler(async (event, context) => {
       foundRegularApplication.status = "reviewed";
       foundRegularApplication.save();
     }
-  } else if (String(foundRegularApplication.regular_user) != String(foundUser._id)) {
+  } else if (String(foundRegularApplication.regular_user._id) != String(foundUser._id)) {
     throw new Error("Unauthorized action by regular user");
   }
 
