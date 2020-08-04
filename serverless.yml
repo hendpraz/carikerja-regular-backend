@@ -24,7 +24,7 @@ provider:
 
 functions:
   #### jobfinding.js
-  findjobs:
+  findjobsbot:
     handler: handlers/jobfinding.findjobsbot
     events:
       - http:
@@ -136,26 +136,9 @@ functions:
           method: patch
           cors: true
           authorizer: aws_iam
-  #### regularplan.js
-  createregularjobposter:
-    handler: handlers/regularplan.createRegularJobposter
-    events:
-      - http:
-          path: create-jobposter/{idu}
-          method: patch
-          cors: true
-          authorizer: aws_iam
-  revokejobposter:
-    handler: handlers/regularplan.revokeJobposter
-    events:
-      - http:
-          path: revoke-jobposter/{idu}
-          method: patch
-          cors: true
-          authorizer: aws_iam
   #### regularuser.js
-  createregularuser:
-    handler: handlers/regularuser.createRegularUser
+  createmyaccount:
+    handler: handlers/regularuser.createMyAccount
     events:
       - http:
           path: regular-users
@@ -186,11 +169,11 @@ functions:
           method: patch
           cors: true
           authorizer: aws_iam
-  deactivateregularuser:
-    handler: handlers/regularuser.deactivateRegularUser
+  deactivatemyaccount:
+    handler: handlers/regularuser.deactivateMyAccount
     events:
       - http:
-          path: deactivate-regular-user/{idu}
+          path: deactivate-my-account
           method: patch
           cors: true
           authorizer: aws_iam

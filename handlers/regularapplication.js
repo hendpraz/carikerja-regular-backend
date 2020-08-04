@@ -62,7 +62,7 @@ export const getApplication = handler(async (event, context) => {
 
   if ((!foundRegularApplication)) {
     throw new Error("Application or job not found");
-  } else if (foundUser.subscription_plan == REGULAR_JOBPOSTER) {
+  } else if (foundUser.role == REGULAR_JOBPOSTER) {
     if (String(foundRegularApplication.regular_job.owner) != String(foundUser._id)) {
       throw new Error("Unauthorized action by jobposter");
     } else if (foundRegularApplication.status == "sent") {
