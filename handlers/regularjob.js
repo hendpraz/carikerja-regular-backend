@@ -85,7 +85,7 @@ export const getRegularJob = handler(async (event, context) => {
   return foundJob;
 });
 
-export const listMyJob = handler(async (event, context) => {
+export const listMyJobs = handler(async (event, context) => {
   console.log(event);
   await connectToDatabase();
 

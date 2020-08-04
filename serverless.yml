@@ -112,8 +112,8 @@ functions:
           method: get
           cors: true
           authorizer: aws_iam
-  listmyjob:
-    handler: handlers/regularjob.listMyJob
+  listmyjobs:
+    handler: handlers/regularjob.listMyJobs
     events:
       - http:
           path: my-jobs
@@ -141,7 +141,7 @@ functions:
     handler: handlers/regularuser.createMyAccount
     events:
       - http:
-          path: regular-users
+          path: register
           method: post
           cors: true
           authorizer: aws_iam
