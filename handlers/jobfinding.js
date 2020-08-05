@@ -95,7 +95,7 @@ export const findjobsweb = handler(async (event, context) => {
   const limit = 10;
   let searchQuery;
 
-  if (q === "*") {
+  if (!q) {
     searchQuery = {};
   } else {
     q = `${q} ${profession || ''} ${location || ''}`;
