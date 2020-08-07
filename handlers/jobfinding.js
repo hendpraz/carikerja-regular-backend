@@ -122,16 +122,24 @@ export const findjobsweb = handler(async (event, context) => {
     page = event.queryStringParameters.page;
     q = event.queryStringParameters.q;
 
+    console.log(event);
+
     parseInt(page, 10) > 0 ? parseInt(page, 10) : 1;
-    q = `${q} ${profession || ''} ${location || ''}`;
-    searchQuery = {
-      $text: {
-        $search: q
-          .split(' ')
-          .map(str => `"${str}"`)
-          .join(' ')
-      }
-    };
+
+    console.log(page);
+    if (q === '') {
+      searchQuery = {};
+    } else {
+      q = `${q} ${profession || ''} ${location || ''}`;
+      searchQuery = {
+        $text: {
+          $search: q
+            .split(' ')
+            .map(str => `"${str}"`)
+            .join(' ')
+        }
+      };
+    }
   }
 
   console.log(searchQuery);
