@@ -58,7 +58,7 @@ export const createRegularJob = handler(async (event, context) => {
 
   newJob.title = data.title;
   newJob.owner = foundUser._id;
-  newJob.description = data.description;
+  newJob.description = data.description + ` ${data.location} ${data.profession}`;
   newJob.num_of_openings = data.num_of_openings;
   newJob.status = "active";
   newJob.location = data.location;
