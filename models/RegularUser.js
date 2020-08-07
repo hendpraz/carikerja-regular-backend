@@ -1,7 +1,4 @@
 import { Schema, model } from 'mongoose';
-/* eslint-disable */
-const SubscriptionPlan = require('./SubscriptionPlan');
-/* eslint-enable */
 /**
  * Document Interface
  * @typedef {Object} Document
@@ -12,7 +9,7 @@ const SubscriptionPlan = require('./SubscriptionPlan');
  * @property {String} profile_picture Nama file profile picture pengguna
  * @property {String} address Alamat pengguna
  * @property {String} status Status pengguna reguler
- * @property {String} subscription_plan Reference ke subscription plan
+ * @property {String} role Kode role
  * @property {String} identity_id cognito identity id pengguna
  */
 // const Id = Schema.Types.ObjectId;
@@ -25,8 +22,7 @@ const documentSchema = new Schema(
     profile_picture: { type: String },
     address: { type: String },
     status: { type: String, required: true },
-    subscription_plan: { type: Number, required: true },
-    plan_expiry_date : Date,
+    role: { type: Number, required: true },
     identity_id: { type: String, required: true, unique: true }
   },
   { timestamps: true }
