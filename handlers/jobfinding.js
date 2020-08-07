@@ -104,20 +104,25 @@ export const findjobsweb = handler(async (event, context) => {
   console.log(event);
   await connectToDatabase();
 
-  const location = event.queryStringParameters.location;
-  const profession = event.queryStringParameters.profession;
+  let location;
+  let profession;
 
   // Build query
-  let q = event.queryStringParameters.q;
-  let page = event.queryStringParameters.page;
-  parseInt(page, 10) > 0 ? parseInt(page, 10) : 1;
+  let q;
+  let page;
 
-  const limit = 10;
+  const limit = 3;
   let searchQuery;
 
-  if (!q) {
+  if (!event.queryStringParameters) {
     searchQuery = {};
   } else {
+    location = event.queryStringParameters.location;
+    profession = event.queryStringParameters.profession;
+    page = event.queryStringParameters.page;
+    q = event.queryStringParameters.q;
+
+    parseInt(page, 10) > 0 ? parseInt(page, 10) : 1;
     q = `${q} ${profession || ''} ${location || ''}`;
     searchQuery = {
       $text: {
